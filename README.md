@@ -8,7 +8,8 @@ Game mechanics:
 •	You can throw knives around and kill the enemies.  
 •	The knives remain stuck to walls so that you can use them in order to climb your way up on them.  
 •	There is a type of enemy that splits into two smaller versions of itself upon death.  
-•	Plenty of particle systems enhancing the experience graphically.
+•	Plenty of particle systems enhancing the experience graphically.  
+•	Adjusted the gravity acceleration with a script such that the jump has a better feel to it.
 
 Animations and Tiles:  
 •	Made in Adobe Photoshop by myself.  
