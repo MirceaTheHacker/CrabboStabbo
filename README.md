@@ -13,3 +13,6 @@ Animations and Tiles:
 •	Made in Adobe Photoshop by myself.
 •	Style: Pixel Art.
 •	Used Anima2D to animate one of the enemies.
+
+# ATTENTION
+This project contains LFS files so in order for those to be downloaded you have to clone the repository (you can not simply download the .ZIP file)
