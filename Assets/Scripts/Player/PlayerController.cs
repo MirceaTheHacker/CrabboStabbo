@@ -31,6 +31,11 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update() {
+        if(m_Rigidbody2D.velocity.y > 0) {
+            Physics2D.IgnoreLayerCollision(8,9, true);
+        } else {
+            Physics2D.IgnoreLayerCollision(8,9, false);
+        }
         m_Horizontal = Input.GetAxis("Horizontal");
         
         if(!Mathf.Approximately(m_Horizontal,0f))
@@ -94,7 +99,6 @@ public class PlayerController : MonoBehaviour
     private void Push(float monsterStrength, Transform NPCTransform) {
         Vector2 pushDirection = new Vector2(gameObject.transform.position.x - NPCTransform.position.x, 0f);
         pushDirection.Normalize();
-        //float Xcomponent = -m_LookingDirection.x * monsterStrength * movementSpeed;
         float Xcomponent = pushDirection.x * monsterStrength * movementSpeed;
         Vector2 pushVector = new Vector2(Xcomponent,
              monsterStrength * movementSpeed / 2f);
@@ -148,15 +152,9 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool CheckObjectAboveSurface(GameObject obj){
-        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, ~LayerMask.GetMask("Confiner", "Player"));
-        if(hit.collider == null) {
-            return false;
-        }
-
-        foreach(string tag in m_InteractibleTags) {
-            if(tag == hit.collider.tag) {
-                return true;
-            }
+        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground", "Lava", "Enemy"));
+        if(hit.collider != null) {
+            return true;
         }
         
         return false;
