@@ -12,21 +12,25 @@ public class KnifeController : MonoBehaviour
     private Rigidbody2D m_Rigidbody2D;
     private Vector3 direction;
     private bool m_Collided = false;
+    private KnifeFXManager m_FXManager;
 
 
     void Awake()
     {
         m_BloodTrail.Stop();
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        m_FXManager = GetComponent<KnifeFXManager>();
+        gameObject.layer = 0;
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(m_Collided) return;
         if(other.gameObject.tag == "Ground")
         {
-            gameObject.layer = 11; //if it hit the grpund we want it to become part of it
-            StartCoroutine(FallToGround(destroyTimer));
             m_Collided = true;
+            m_FXManager.PlayHitGroundSoundFX();
+            StartCoroutine(FallToGround(destroyTimer));
+            gameObject.layer = 9;
         } else if(other.gameObject.tag == "Enemy")
         {
             NPCControllerAbstract monsterController = other.gameObject.GetComponent<NPCControllerAbstract>();

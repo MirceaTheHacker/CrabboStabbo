@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FXManagerAbstract : MonoBehaviour
+public abstract class FXManagerAbstract : MonoBehaviour
 {
     public ParticleSystem m_BurstLavaEmission;
     public ParticleSystem m_LoopLavaEmission;
@@ -16,7 +16,7 @@ public class FXManagerAbstract : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other) {
+    public virtual void OnCollisionExit2D(Collision2D other) {
         if(other.collider.tag == "Lava") {
             DeactivateLavaParticles();
         } else if (other.collider.tag == "Ground") {

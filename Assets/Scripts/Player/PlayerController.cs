@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private float m_Horizontal;
     private string[] m_InteractibleTags = {"Ground", "Enemy", "Knife", "Lava"};
     private Vector3 m_LastGroundedPostion;
+    private PlayerFXManager m_FXManager;
 
     void Awake()
     {
@@ -28,14 +29,10 @@ public class PlayerController : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         m_Health = GetComponent<Health>();
         m_LastGroundedPostion = m_Rigidbody2D.transform.position;
+        m_FXManager = GetComponent<PlayerFXManager>();
     }
 
     private void Update() {
-        if(m_Rigidbody2D.velocity.y > 0) {
-            Physics2D.IgnoreLayerCollision(8,9, true);
-        } else {
-            Physics2D.IgnoreLayerCollision(8,9, false);
-        }
         m_Horizontal = Input.GetAxis("Horizontal");
         
         if(!Mathf.Approximately(m_Horizontal,0f))
@@ -86,6 +83,7 @@ public class PlayerController : MonoBehaviour
             onASurface = true;
         }
 
+        m_FXManager.OnCollisionStayWalkingSoundFXHandler(other, m_Horizontal);
     }
 
     private void OnCollisionExit2D(Collision2D other) {
@@ -111,6 +109,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(ImmunityCooldown());
             m_Health.UpdateHearts(-damageValue);
+            m_FXManager.HitSoundFX();
         }
     }
 
@@ -152,7 +151,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool CheckObjectAboveSurface(GameObject obj){
-        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground", "Lava", "Enemy"));
+        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Monster","Lava"));
         if(hit.collider != null) {
             return true;
         }
@@ -164,6 +163,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForFixedUpdate();
         if(m_Rigidbody2D.position.y < -10)
         {
+            m_Rigidbody2D.velocity = Vector2.zero;
             m_Rigidbody2D.transform.position = m_LastGroundedPostion;
             DamagePlayer(1);
         }
@@ -204,6 +204,4 @@ public class PlayerController : MonoBehaviour
         m_Rigidbody2D.transform.eulerAngles = new Vector3(0f,0f,0f);
         m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
-
-
 }
