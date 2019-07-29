@@ -1,5 +1,5 @@
 # CrabboStabbo
-2D Platformer Adventure Game
+2D Platformer Adventure Game made in Unity
 
 STORY:
 It is the year 2023, humanity kept on fishing and consuming crabs until all species became extinct, or so everyone thought. The main character is Mr. Crabbo Stabbo, the last crab on earth. Help him make justice and defeat the chefs trying to cook him up.
@@ -18,3 +18,8 @@ Animations and Tiles:
 
 # ATTENTION
 This project contains LFS files so in order for those to be downloaded you have to clone the repository (you can not simply download the .ZIP file)
+
+# TO DO LIST
+•	Add audio  
+•	Configure UI/UX  
+•	Add more mechanics
