@@ -21,6 +21,6 @@ public class KnifeFXManager : FXManagerAbstract
     }
 
     private void Start() {
-        m_GrassParticles.Stop();
+        DisableGrassParticles();
     }
 }

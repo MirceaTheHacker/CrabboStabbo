@@ -28,7 +28,7 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
         SpawnEnemies();
     }
 
-    public override void Damage(int value){
+    protected override void Damage(int value){
         base.Damage(value);
         StartCoroutine(OnHit());
     }

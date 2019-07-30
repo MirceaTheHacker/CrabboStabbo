@@ -9,8 +9,9 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     public Transform m_GroundDetector;
     public int m_HealthPoints = 3;
     public int m_Strength = 1;
+    public float m_PushingCoefficient = 2f;
 
-    protected Rigidbody2D rb2d;
+    protected Rigidbody2D m_Rigidbody2D;
     protected internal Vector2 m_LookingDirection = new Vector2(1,0);
 
     protected Animator m_Animator;
@@ -18,11 +19,13 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     private Color alphaColor;
     private float fadeDuration = 1f;
     private bool m_Wait = false;
+    private NPCFXAbstract m_FXManager;
 
     protected virtual void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_Animator = GetComponent<Animator>();
+        m_FXManager = GetComponent<NPCFXAbstract>();
     }
 
     protected virtual void Update() {
@@ -36,7 +39,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         if (!isAlive || m_Wait) return;
         if(CanWalk())
         {
-            rb2d.transform.position += new Vector3(m_LookingDirection.x,0f,0f) * movementSpeed * Time.deltaTime;
+            m_Rigidbody2D.transform.position += new Vector3(m_LookingDirection.x,0f,0f) * movementSpeed * Time.deltaTime;
         } else {
             StartCoroutine(TurnAround());
         }
@@ -66,7 +69,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     }
 
     protected void AttackPlayer(PlayerController playerController) {
-        playerController.Attack(m_Strength, gameObject.transform);  
+        playerController.Attacked(m_Strength, gameObject.transform);  
     }
 
     private bool CanWalk()
@@ -87,13 +90,18 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         return false;
     }
 
-    public virtual void Damage(int value) {
-        m_HealthPoints -= value;
+    protected virtual void Damage(int hitStrenght) {
+        m_HealthPoints -= hitStrenght;
+        if(m_HealthPoints > 0) {
+            m_FXManager.PlayHitSoundFX();
+        } else {
+            m_FXManager.PlayDeathSoundFX();
+        }
     }
 
     protected virtual void OnDeath() {
         SetAllCollidersStatus(false);
-        rb2d.bodyType = RigidbodyType2D.Kinematic;
+        m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         StartCoroutine(Utils.FadeGameObject(gameObject, fadeDuration));
         isAlive = false;
     }
@@ -103,5 +111,19 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         {
             c.enabled = active;
         }
+    }
+
+    private void Push(float hitStrength, Transform HitTransform) {
+        Vector2 pushDirection = new Vector2(gameObject.transform.position.x - HitTransform.position.x, 0f);
+        pushDirection.Normalize();
+        float Xcomponent = pushDirection.x * hitStrength * movementSpeed * m_Rigidbody2D.mass * m_PushingCoefficient;
+        Vector2 pushVector = new Vector2(Xcomponent,
+             hitStrength * movementSpeed / 2f * m_Rigidbody2D.mass);
+        m_Rigidbody2D.AddForce(pushVector,ForceMode2D.Impulse);
+    }
+
+    public void Attacked(int hitStrenght, Transform HitTransform) {
+        Damage(hitStrenght);
+        Push(hitStrenght, HitTransform);
     }
 }

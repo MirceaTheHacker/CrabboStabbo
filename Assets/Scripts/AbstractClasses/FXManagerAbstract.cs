@@ -6,13 +6,13 @@ public abstract class FXManagerAbstract : MonoBehaviour
 {
     public ParticleSystem m_BurstLavaEmission;
     public ParticleSystem m_LoopLavaEmission;
-    public ParticleSystem m_GrassParticles;
+    public ParticleSystem[] m_GrassParticles;
     
     protected virtual void OnCollisionEnter2D(Collision2D other) {
         if(other.collider.tag == "Lava") {
             ActivateLavaParticles();
         } else if (other.collider.tag == "Ground") {
-            m_GrassParticles.Play();
+            EnableGrassParticles();
         }
     }
 
@@ -20,7 +20,26 @@ public abstract class FXManagerAbstract : MonoBehaviour
         if(other.collider.tag == "Lava") {
             DeactivateLavaParticles();
         } else if (other.collider.tag == "Ground") {
-            m_GrassParticles.Stop();
+            DisableGrassParticles();
+        }
+    }
+
+    public void EnableGrassParticles() {
+        foreach (ParticleSystem grassParticles in m_GrassParticles) {
+            grassParticles.Play();
+        }
+    }
+
+    public bool IsGrassParticlesPlaying() {
+        foreach (ParticleSystem grassParticles in m_GrassParticles) {
+            if(grassParticles.isPlaying) return true;
+        }
+        return false;
+    }
+
+    public void DisableGrassParticles() {
+        foreach (ParticleSystem grassParticles in m_GrassParticles) {
+            grassParticles.Stop();
         }
     }
 

@@ -4884,7 +4884,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4720490083643577346, guid: 871776bf76692af489ee1e2da36b237d,
+  m_Sprite: {fileID: -2060072695577226723, guid: 871776bf76692af489ee1e2da36b237d,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4950,7 +4950,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 1, y: 0.5}
-    oldSize: {x: 0.5416667, y: 0.083333336}
+    oldSize: {x: 0.75, y: 0.083333336}
     newSize: {x: 0.32, y: 0.09}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -4958,13 +4958,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.00088882446, y: 0.04077793}
-      - {x: 0.0017774105, y: -0.04255545}
+    - - {x: -0.28742233, y: 0.04077793}
+      - {x: -0.28653374, y: -0.04255545}
       - {x: 0.4372871, y: -0.039854668}
       - {x: 0.3586657, y: -0.04076949}
       - {x: 0.38838148, y: 0.0006193854}
       - {x: 0.3906529, y: 0.02603735}
-      - {x: 0.38968968, y: 0.039889187}
+      - {x: 0.3902312, y: 0.039889187}
 --- !u!114 &9165758927695818199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4979,7 +4979,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BurstLavaEmission: {fileID: 478348429492399291}
   m_LoopLavaEmission: {fileID: 8329122907583847275}
-  m_GrassParticles: {fileID: 8302637039746341906}
+  m_GrassParticles:
+  - {fileID: 8302637039746341906}
   m_AudioSource: {fileID: 6851682130403191717}
   groundHitSoundFX: {fileID: 8300000, guid: 001ee6b879f632d4da4c9f0dce2df508, type: 3}
   knifeThrowSoundFX: {fileID: 8300000, guid: d0d1640f4721f4d4eb3eea54b5b9b05c, type: 3}
@@ -14798,7 +14799,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 0

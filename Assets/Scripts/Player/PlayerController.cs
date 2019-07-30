@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public GameObject KnifeSpawnPoint;
     public GameObject[] m_GroundCheckers;
     public float immunityTimer = 2f;
+    public GameObject[] m_EnemyDetectors;
+    public float m_MeleeRange = 2f;
+    public int m_MeleeStrength = 1;
     
     internal bool m_IsImmune = false;
     private Rigidbody2D m_Rigidbody2D;
@@ -46,12 +49,16 @@ public class PlayerController : MonoBehaviour
             m_Rigidbody2D.AddForce(new Vector2(0f,jumpVelocity), ForceMode2D.Impulse);
             onASurface = false;
         }
-        if (Input.GetButtonDown("Attack"))
+        if (Input.GetButtonDown("Throw"))
         {
-            m_Animator.SetTrigger("attack");
+            m_Animator.SetTrigger("throw");
             GameObject knifeObject = Instantiate(knifePrefab, KnifeNoise(), Quaternion.identity);
             KnifeController knifeController = knifeObject.GetComponent<KnifeController>();
             knifeController.SetDirection(m_LookingDirection);
+        } else if (Input.GetButtonDown("Melee")) {
+            m_Animator.SetTrigger("melee");
+            Melee();
+            
         } else {
         m_Animator.SetFloat("lookX", m_LookingDirection.x);
         m_Animator.SetFloat("speed", Mathf.Abs(m_Horizontal));
@@ -62,6 +69,17 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate() {
        m_Rigidbody2D.transform.position += new Vector3(m_Horizontal,0f,0f) * movementSpeed * Time.deltaTime;
+    }
+
+    private void Melee() {
+        foreach (GameObject detector in m_EnemyDetectors) {
+            Debug.DrawRay(detector.transform.position, m_LookingDirection * m_MeleeRange, Color.green, 2f);
+            RaycastHit2D hit = Physics2D.Raycast(detector.transform.position, m_LookingDirection, m_MeleeRange, LayerMask.GetMask("Enemy"));
+            if( hit.collider != null) {
+                NPCControllerAbstract npcController = hit.collider.GetComponentInParent<NPCControllerAbstract>();
+                npcController.Attacked(m_MeleeStrength, m_Rigidbody2D.transform);
+            }
+        }
     }
 
     private Vector2 KnifeNoise(){
@@ -113,7 +131,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Attack (int monsterStrength, Transform NPCTransform) {
+    public void Attacked (int monsterStrength, Transform NPCTransform) {
         if(m_IsImmune) return;
         Push(monsterStrength, NPCTransform);
         DamagePlayer(monsterStrength);

@@ -31,27 +31,29 @@ public class KnifeController : MonoBehaviour
             m_FXManager.PlayHitGroundSoundFX();
             StartCoroutine(FallToGround(destroyTimer));
             gameObject.layer = 9;
+            m_Rigidbody2D.velocity = new Vector2(0f,0f);
+            m_Rigidbody2D.bodyType = RigidbodyType2D.Static;
         } else if(other.gameObject.tag == "Enemy")
         {
             NPCControllerAbstract monsterController = other.gameObject.GetComponent<NPCControllerAbstract>();
-            monsterController.Damage(m_KnfieDamage);
+            monsterController.Attacked(m_KnfieDamage, gameObject.transform);
             knifeVelocity = 0f;
             m_Rigidbody2D.transform.SetParent(other.collider.gameObject.transform);
             if (other.collider.gameObject.tag != "Untagged") {
                 m_BloodTrail.Play();
             }
             StartCoroutine(FallToGround(destroyTimer));
+            m_Rigidbody2D.simulated = false;
             m_Collided = true;
         }
     }
 
     private IEnumerator FallToGround (float time) {
-        knifeVelocity = 0f;
-        m_Rigidbody2D.bodyType = RigidbodyType2D.Static;
         yield return new WaitForSeconds(time);
+        m_Rigidbody2D.simulated = true;
+        m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         gameObject.transform.SetParent(null);
         m_Rigidbody2D.constraints = RigidbodyConstraints2D.None;
-        m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.AddForce(Vector2.down * m_Rigidbody2D.mass,ForceMode2D.Impulse);
         m_Rigidbody2D.AddTorque(-0.1f * m_Rigidbody2D.mass, ForceMode2D.Impulse);
         yield return new WaitForSeconds(time);
@@ -60,6 +62,7 @@ public class KnifeController : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        if(m_Collided) return;
         m_Rigidbody2D.transform.position += direction * knifeVelocity * Time.deltaTime;
     }
 

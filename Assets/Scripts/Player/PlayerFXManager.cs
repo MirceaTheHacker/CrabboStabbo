@@ -19,10 +19,10 @@ public class PlayerFXManager : FXManagerAbstract{
     private void OnCollisionStay2D(Collision2D other) {
         if(other.collider.tag == "Ground") {
             if (!Mathf.Approximately(0f,m_Rigidbody2D.velocity.y)){
-                m_GrassParticles.Stop();
+                DisableGrassParticles();
             } else {
-                if (!m_GrassParticles.isPlaying) {
-                m_GrassParticles.Play();
+                if (!IsGrassParticlesPlaying()) {
+                EnableGrassParticles();
                 }
             }
         }

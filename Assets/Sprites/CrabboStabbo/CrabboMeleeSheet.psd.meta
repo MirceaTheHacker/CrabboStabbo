@@ -1,34 +1,43 @@
 fileFormatVersion: 2
-guid: 871776bf76692af489ee1e2da36b237d
+guid: aab78a7f6c0e7a64e9b041354225ee52
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2276347153722000764
-    second: MrCrabPixelArt_0
+      213: 4044740375834913904
+    second: CrabboMeleeSheet_0
   - first:
-      213: 6057582971260571701
-    second: MrCrabPixelArt_1
+      213: -5339345839532316206
+    second: CrabboMeleeSheet_1
   - first:
-      213: 5933216308906848236
-    second: MrCrabPixelArt_2
+      213: -3528048585122044297
+    second: CrabboMeleeSheet_2
   - first:
-      213: -6850512498628660797
-    second: MrCrabPixelArt_3
+      213: 1379748062070675435
+    second: CrabboMeleeSheet_3
   - first:
-      213: 3989892877243091091
-    second: MrCrabPixelArt_4
+      213: -4186426391770354327
+    second: CrabboMeleeSheet_4
   - first:
-      213: 3015249285129457984
-    second: MrCrabPixelArt_5
+      213: 8816129940256277455
+    second: CrabboMeleeSheet_5
   - first:
-      213: 2025778674898444397
-    second: MrCrabPixelArt_6
+      213: -7929326096863776165
+    second: CrabboMeleeSheet_6
   - first:
-      213: 4720490083643577346
-    second: MrCrabPixelArt_7
+      213: 804363651355422304
+    second: CrabboMeleeSheet_7
   - first:
-      213: -2060072695577226723
-    second: MrCrabPixelArt_8
+      213: -8017011822869765432
+    second: CrabboMeleeSheet_8
+  - first:
+      213: -1146309587493754471
+    second: CrabboMeleeSheet_9
+  - first:
+      213: 3388949491365372889
+    second: CrabboMeleeSheet_10
+  - first:
+      213: 8576225257464093055
+    second: CrabboMeleeSheet_11
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -144,190 +153,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MrCrabPixelArt_0
+      name: CrabboMeleeSheet_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 243
-        width: 23
-        height: 34
+        x: 0
+        y: 170.66666
+        width: 102.4
+        height: 85.333336
       alignment: 9
-      pivot: {x: 0.5, y: 0.1}
+      pivot: {x: 0.35, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 613c93c93e62c73479a8c780ce8adca9
-      internalID: -2276347153722000764
+      spriteID: 48955ed8761230944baa5b6bf9fec67e
+      internalID: 4044740375834913904
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MrCrabPixelArt_1
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 243
-        width: 23
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 19f3f4ecb0d640d47924be73c2bd366d
-      internalID: 6057582971260571701
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MrCrabPixelArt_2
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 243
-        width: 23
-        height: 33
-      alignment: 9
-      pivot: {x: 0.5, y: 0.1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 77cbe5c19c837524b867298c6ee045da
-      internalID: 5933216308906848236
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MrCrabPixelArt_3
-      rect:
-        serializedVersion: 2
-        x: 77
-        y: 243
-        width: 23
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5, y: 0.1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 044bc0f690a6de64eaa9c4c484f95337
-      internalID: -6850512498628660797
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MrCrabPixelArt_4
+      name: CrabboMeleeSheet_1
       rect:
         serializedVersion: 2
         x: 102
-        y: 244
-        width: 23
-        height: 33
+        y: 170.66666
+        width: 102.4
+        height: 85.333336
       alignment: 9
-      pivot: {x: 0.5, y: 0.1}
+      pivot: {x: 0.35, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76045af97c5fc7140a16bc0188045e55
-      internalID: 3989892877243091091
+      spriteID: 054f20448a0f4c44097a7972beacaa3c
+      internalID: -5339345839532316206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MrCrabPixelArt_5
+      name: CrabboMeleeSheet_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 214
-        width: 42
-        height: 18
+        x: 204
+        y: 170.66666
+        width: 102.4
+        height: 85.333336
       alignment: 9
-      pivot: {x: 0.5, y: 0.1}
+      pivot: {x: 0.35, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd0a59afac06fdd4f9dc475165679bea
-      internalID: 3015249285129457984
+      spriteID: 49d6c149db818bd42b8acbcc75e28c6d
+      internalID: -3528048585122044297
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MrCrabPixelArt_6
+      name: CrabboMeleeSheet_3
       rect:
         serializedVersion: 2
-        x: 54
-        y: 213
-        width: 34
-        height: 26
+        x: 306
+        y: 170
+        width: 102
+        height: 85
       alignment: 9
-      pivot: {x: 0.5, y: 0.1}
+      pivot: {x: 0.35, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01edc76e45a084241939662066b1f130
-      internalID: 2025778674898444397
+      spriteID: be3a7614e87f8af41bdee201fb6e718b
+      internalID: 1379748062070675435
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MrCrabPixelArt_7
+      name: CrabboMeleeSheet_4
       rect:
         serializedVersion: 2
-        x: 115
-        y: 214
-        width: 23
-        height: 18
+        x: 408
+        y: 170.66666
+        width: 102.4
+        height: 85.333336
       alignment: 9
-      pivot: {x: 0.5, y: 0.1}
+      pivot: {x: 0.35, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b41ceb9d1c0efca42bff77454469ca1f
-      internalID: 4720490083643577346
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MrCrabPixelArt_8
-      rect:
-        serializedVersion: 2
-        x: 89
-        y: 222
-        width: 18
-        height: 2
-      alignment: 9
-      pivot: {x: 1, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3ebd87c40312db14594927e3c5321bc2
-      internalID: -2060072695577226723
+      spriteID: 476ea9583e6df6f43b6a7c8e33c71709
+      internalID: -4186426391770354327
       vertices: []
       indices: 
       edges: []
@@ -335,7 +260,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f78058ea28ed72145b9e247f4e0f30be
+    spriteID: 24351260136a8eb4c9006e7369eb0143
     internalID: 0
     vertices: []
     indices: 
