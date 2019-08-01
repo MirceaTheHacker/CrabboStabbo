@@ -9,18 +9,26 @@ public abstract class FXManagerAbstract : MonoBehaviour
     public ParticleSystem[] m_GrassParticles;
     
     protected virtual void OnCollisionEnter2D(Collision2D other) {
-        if(other.collider.tag == "Lava") {
-            ActivateLavaParticles();
-        } else if (other.collider.tag == "Ground") {
+         if (other.collider.tag == "Ground") {
             EnableGrassParticles();
         }
     }
 
     public virtual void OnCollisionExit2D(Collision2D other) {
-        if(other.collider.tag == "Lava") {
-            DeactivateLavaParticles();
-        } else if (other.collider.tag == "Ground") {
+        if (other.collider.tag == "Ground") {
             DisableGrassParticles();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "Lava") {
+            ActivateLavaParticles();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.tag == "Lava") {
+            DeactivateLavaParticles();
         }
     }
 

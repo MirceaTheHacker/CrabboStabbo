@@ -37,9 +37,9 @@ public class ChefController : NPCControllerAbstract
     }
     
     private void AttackChecker() {
-        RaycastHit2D hitDown = Physics2D.Raycast(m_GroundDetector.position,Vector2.down, Mathf.Infinity,
+        RaycastHit2D hitDown = Physics2D.Raycast(m_ProximitySensor.position,Vector2.down, Mathf.Infinity,
         LayerMask.GetMask("Player"));
-        RaycastHit2D hitUp = Physics2D.Raycast(m_GroundDetector.position,Vector2.up, Mathf.Infinity,
+        RaycastHit2D hitUp = Physics2D.Raycast(m_ProximitySensor.position,Vector2.up, Mathf.Infinity,
         LayerMask.GetMask("Player"));
         if(hitDown.collider != null || hitUp.collider != null) {
             float distanceToPlayer = 0f;
@@ -60,7 +60,7 @@ public class ChefController : NPCControllerAbstract
     private void GetAttackParameters (RaycastHit2D hit, out float distanceToPlayer, out PlayerController playerController) {
         distanceToPlayer = 0f;
         playerController = null;
-        distanceToPlayer = hit.collider.transform.position.y - m_GroundDetector.position.y;
+        distanceToPlayer = hit.collider.transform.position.y - m_ProximitySensor.position.y;
         playerController = hit.collider.gameObject.GetComponent<PlayerController>();
     }
 
@@ -68,5 +68,18 @@ public class ChefController : NPCControllerAbstract
         if(Mathf.Abs(distance) < m_AttackRange) {
             return true;
         } else return false;
+    }
+
+    protected override IEnumerator PlayerDetectedHandler(){
+        if(!m_LockedOnPlayer){
+        movementSpeed *= 3;
+        yield return StartCoroutine(LockOnPlayer());
+        movementSpeed /= 3;
+        }
+    }
+
+    internal override void FastTurn(){
+        base.FastTurn();
+        m_Animator.SetFloat("LookX", m_LookingDirection.x);
     }
 }

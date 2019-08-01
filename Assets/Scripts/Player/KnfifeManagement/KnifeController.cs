@@ -13,6 +13,7 @@ public class KnifeController : MonoBehaviour
     private Vector3 direction;
     private bool m_Collided = false;
     private KnifeFXManager m_FXManager;
+    internal PlayerController m_PlayerInfo;
 
 
     void Awake()
@@ -21,6 +22,12 @@ public class KnifeController : MonoBehaviour
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_FXManager = GetComponent<KnifeFXManager>();
         gameObject.layer = 0;
+        Destroy(gameObject, 10f); //destroy the knife after 10 seconds
+    }
+
+    private void FixedUpdate() {
+        if(m_Collided) return;
+        m_Rigidbody2D.transform.position += direction * knifeVelocity * Time.deltaTime;
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
@@ -35,8 +42,8 @@ public class KnifeController : MonoBehaviour
             m_Rigidbody2D.bodyType = RigidbodyType2D.Static;
         } else if(other.gameObject.tag == "Enemy")
         {
-            NPCControllerAbstract monsterController = other.gameObject.GetComponent<NPCControllerAbstract>();
-            monsterController.Attacked(m_KnfieDamage, gameObject.transform);
+            NPCControllerAbstract npcController = other.gameObject.GetComponent<NPCControllerAbstract>();
+            npcController.Attacked(m_KnfieDamage, m_PlayerInfo);
             knifeVelocity = 0f;
             m_Rigidbody2D.transform.SetParent(other.collider.gameObject.transform);
             if (other.collider.gameObject.tag != "Untagged") {
@@ -61,21 +68,12 @@ public class KnifeController : MonoBehaviour
         StartCoroutine(Utils.FadeGameObject(gameObject, 1f));
     }
 
-    private void FixedUpdate() {
-        if(m_Collided) return;
-        m_Rigidbody2D.transform.position += direction * knifeVelocity * Time.deltaTime;
-    }
-
-    public void SetDirection(Vector3 direction)
+    internal void SetDirection(Vector3 direction)
     {
         if(direction.x < 0)
         {
             gameObject.transform.eulerAngles = new Vector3 (0,-180,0);
         }
         this.direction = direction;
-    }
-
-    private void DestroyMe(){
-        Destroy(gameObject);
     }
 }

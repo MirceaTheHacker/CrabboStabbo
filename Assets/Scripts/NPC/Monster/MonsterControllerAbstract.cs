@@ -6,6 +6,9 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
 {
     public GameObject m_LittleMonster;
     public GameObject[] m_OnHitParts; 
+    public GameObject m_ThrowablePrefab;
+    public float m_FireDelay = 2f;
+    public GameObject m_SpawnThrowableLocation;
 
     protected abstract void SpawnEnemies();
 
@@ -31,5 +34,24 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
     protected override void Damage(int value){
         base.Damage(value);
         StartCoroutine(OnHit());
+    }
+
+    protected override IEnumerator PlayerDetectedHandler(){
+        if (!m_LockedOnPlayer) {
+        StartCoroutine(LockOnPlayer());
+        yield return StartCoroutine(Throw());
+        }
+    }
+
+    private IEnumerator Throw(){
+        while(m_LockedOnPlayer && isAlive) {
+            GameObject throwableInstance = Instantiate (m_ThrowablePrefab,
+             m_SpawnThrowableLocation.transform.position,
+             Quaternion.identity);
+            MonsterThrowableController throwableController = 
+            throwableInstance.GetComponent<MonsterThrowableController>();
+            throwableController.SetDirection(m_LookingDirection);
+            yield return new WaitForSeconds(m_FireDelay);
+        }  
     }
 }

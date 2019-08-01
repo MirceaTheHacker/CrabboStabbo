@@ -20,7 +20,7 @@ public class BigMonsterController : MonsterControllerAbstract
 
         //making one monster walk the other way 
         SmallMonsterController littleMonster1Controller = littleMonster1.GetComponent<SmallMonsterController>();
-        littleMonster1Controller.GroundDetectorSwitcher();
+        littleMonster1Controller.DetectorsSwitcher();
         littleMonster1Controller.m_LookingDirection = -littleMonster1Controller.m_LookingDirection;
     }
 

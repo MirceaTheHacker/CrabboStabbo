@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public GameObject[] m_EnemyDetectors;
     public float m_MeleeRange = 2f;
     public int m_MeleeStrength = 1;
+    public float m_MeleeCooldown = 0.5f;
     
     internal bool m_IsImmune = false;
     private Rigidbody2D m_Rigidbody2D;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private string[] m_InteractibleTags = {"Ground", "Enemy", "Knife", "Lava"};
     private Vector3 m_LastGroundedPostion;
     private PlayerFXManager m_FXManager;
+    private bool m_MeleeInCooldown = false;
 
     void Awake()
     {
@@ -43,20 +45,14 @@ public class PlayerController : MonoBehaviour
             m_LookingDirection.Set(m_Horizontal,0f);
             m_LookingDirection.Normalize();
         }
-        CheckPlayerAboveSurface();
         if(Input.GetButtonDown("Jump") && CheckPlayerAboveSurface() && onASurface)
         {
             m_Rigidbody2D.AddForce(new Vector2(0f,jumpVelocity), ForceMode2D.Impulse);
             onASurface = false;
         }
-        if (Input.GetButtonDown("Throw"))
-        {
-            m_Animator.SetTrigger("throw");
-            GameObject knifeObject = Instantiate(knifePrefab, KnifeNoise(), Quaternion.identity);
-            KnifeController knifeController = knifeObject.GetComponent<KnifeController>();
-            knifeController.SetDirection(m_LookingDirection);
+        if (Input.GetButtonDown("Throw")) {
+            Throw();
         } else if (Input.GetButtonDown("Melee")) {
-            m_Animator.SetTrigger("melee");
             Melee();
             
         } else {
@@ -64,6 +60,7 @@ public class PlayerController : MonoBehaviour
         m_Animator.SetFloat("speed", Mathf.Abs(m_Horizontal));
         }
 
+        UpdateGroundedPosition();
         StartCoroutine(CheckIfFellOff());
     }
 
@@ -71,15 +68,41 @@ public class PlayerController : MonoBehaviour
        m_Rigidbody2D.transform.position += new Vector3(m_Horizontal,0f,0f) * movementSpeed * Time.deltaTime;
     }
 
+    private void Throw() {
+        m_Animator.SetTrigger("throw");
+        GameObject knifeObject = Instantiate(knifePrefab, KnifeNoise(), Quaternion.identity);
+        KnifeController knifeController = knifeObject.GetComponent<KnifeController>();
+        knifeController.SetDirection(m_LookingDirection);
+        knifeController.m_PlayerInfo = this;
+    }
+
     private void Melee() {
+        if(m_MeleeInCooldown) return;
+        m_Animator.SetTrigger("melee");
+        StartCoroutine(MeleeCooldown());
         foreach (GameObject detector in m_EnemyDetectors) {
             Debug.DrawRay(detector.transform.position, m_LookingDirection * m_MeleeRange, Color.green, 2f);
-            RaycastHit2D hit = Physics2D.Raycast(detector.transform.position, m_LookingDirection, m_MeleeRange, LayerMask.GetMask("Enemy"));
-            if( hit.collider != null) {
+            RaycastHit2D hit = Physics2D.Raycast(detector.transform.position, m_LookingDirection, m_MeleeRange,
+             LayerMask.GetMask("Enemy", "MonsterThrowable"));
+            if (hit.collider != null) {
+                if (hit.collider.gameObject.tag == "Enemy") {
                 NPCControllerAbstract npcController = hit.collider.GetComponentInParent<NPCControllerAbstract>();
-                npcController.Attacked(m_MeleeStrength, m_Rigidbody2D.transform);
+                npcController.Attacked(m_MeleeStrength, this);
+                npcController.m_PlayerInfo = this;
+                } else if (hit.collider.gameObject.tag == "MonsterThrowable") {
+                    MonsterThrowableController throwableController = hit.collider.gameObject.GetComponent<MonsterThrowableController>();
+                    throwableController.DestroyMe();
+                }
+
+                break;
             }
         }
+    }
+
+    private IEnumerator MeleeCooldown() {
+        m_MeleeInCooldown = true;
+        yield return new WaitForSeconds(m_MeleeCooldown);
+        m_MeleeInCooldown = false;
     }
 
     private Vector2 KnifeNoise(){
@@ -96,12 +119,19 @@ public class PlayerController : MonoBehaviour
                 onASurface = true;
             } 
         }
-        if(other.collider.tag == "Lava") {
-            DamagePlayer(1);
-            onASurface = true;
-        }
 
         m_FXManager.OnCollisionStayWalkingSoundFXHandler(other, m_Horizontal);
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
+        foreach(string tag in m_InteractibleTags) {
+            if(tag == other.tag) {
+                onASurface = true;
+            } 
+        }
+        if(other.tag == "Lava") {
+            DamagePlayer(1);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other) {
@@ -141,7 +171,9 @@ public class PlayerController : MonoBehaviour
         m_IsImmune = true;
         StartCoroutine(FlashPlayer(immunityTimer));
         StartCoroutine(Stun(immunityTimer));
+        Physics2D.IgnoreLayerCollision(8,10,true);
         yield return new WaitForSeconds(immunityTimer);
+        Physics2D.IgnoreLayerCollision(8,10,false);
         m_IsImmune = false;
     }
 
@@ -153,29 +185,41 @@ public class PlayerController : MonoBehaviour
 
     private bool CheckPlayerAboveSurface()
     {
-        bool bothGroundersOK = true;
-        bool isAboveASurface = false;
         foreach(GameObject groundChecker in m_GroundCheckers) {
             if(CheckObjectAboveSurface(groundChecker)) {
-                isAboveASurface = true;
-            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void UpdateGroundedPosition() {
+        bool bothGroundersOK = true;
+        foreach(GameObject groundChecker in m_GroundCheckers) {
+            if(!CheckObjectAboveSurface(groundChecker)) {
                 bothGroundersOK = false;
             }
         }
         if(bothGroundersOK) {
             m_LastGroundedPostion = m_Rigidbody2D.transform.position;
         }
-        return isAboveASurface;
     }
 
     private bool CheckObjectAboveSurface(GameObject obj){
-        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Monster","Lava"));
+        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Enemy","Lava"));
         if(hit.collider != null) {
             return true;
         }
-        
         return false;
     }
+
+    // private bool CheckObjectAboveSurface(GameObject obj){
+    //     RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Enemy","Lava"));
+    //     if(hit.collider != null) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     private IEnumerator CheckIfFellOff(){
         yield return new WaitForFixedUpdate();
