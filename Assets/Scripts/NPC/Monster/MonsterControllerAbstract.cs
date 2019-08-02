@@ -12,6 +12,8 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
 
     protected abstract void SpawnEnemies();
 
+    private bool throwing = false;
+
     private IEnumerator OnHit(){
         SetOnHitBodyParts(true);
         yield return new WaitForSeconds(2);
@@ -29,7 +31,6 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
         base.OnDeath();
         m_Animator.SetBool("IsDead", true);
         SpawnEnemies();
-        Debug.Log("Enemies spawned");
     }
 
     protected override void Damage(int value){
@@ -45,14 +46,19 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
     }
 
     private IEnumerator Throw(){
-        while(m_LockedOnPlayer && isAlive) {
-            GameObject throwableInstance = Instantiate (m_ThrowablePrefab,
-             m_SpawnThrowableLocation.transform.position,
-             Quaternion.identity);
-            MonsterThrowableController throwableController = 
-            throwableInstance.GetComponent<MonsterThrowableController>();
-            throwableController.SetDirection(m_LookingDirection);
-            yield return new WaitForSeconds(m_FireDelay);
-        }  
+        if (!throwing) {
+            throwing = true;
+            while(m_LockedOnPlayer && isAlive) {
+                yield return new WaitForSeconds(1f);
+                GameObject throwableInstance = Instantiate (m_ThrowablePrefab,
+                    m_SpawnThrowableLocation.transform.position,
+                    Quaternion.identity);
+                MonsterThrowableController throwableController = 
+                throwableInstance.GetComponent<MonsterThrowableController>();
+                throwableController.SetDirection(new Vector2(m_LookingDirection.x, 0));
+                yield return new WaitForSeconds(m_FireDelay);
+            } 
+            throwing = false;
+        }
     }
 }

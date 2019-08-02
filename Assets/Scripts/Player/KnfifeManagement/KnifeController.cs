@@ -21,8 +21,8 @@ public class KnifeController : MonoBehaviour
         m_BloodTrail.Stop();
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_FXManager = GetComponent<KnifeFXManager>();
-        gameObject.layer = 0;
-        Destroy(gameObject, 10f); //destroy the knife after 10 seconds
+        Physics2D.IgnoreLayerCollision(8,9,true);
+        Destroy(gameObject, 10f);
     }
 
     private void FixedUpdate() {
@@ -37,7 +37,6 @@ public class KnifeController : MonoBehaviour
             m_Collided = true;
             m_FXManager.PlayHitGroundSoundFX();
             StartCoroutine(FallToGround(destroyTimer));
-            gameObject.layer = 9;
             m_Rigidbody2D.velocity = new Vector2(0f,0f);
             m_Rigidbody2D.bodyType = RigidbodyType2D.Static;
         } else if(other.gameObject.tag == "Enemy")
@@ -46,9 +45,7 @@ public class KnifeController : MonoBehaviour
             npcController.Attacked(m_KnfieDamage, m_PlayerInfo);
             knifeVelocity = 0f;
             m_Rigidbody2D.transform.SetParent(other.collider.gameObject.transform);
-            if (other.collider.gameObject.tag != "Untagged") {
-                m_BloodTrail.Play();
-            }
+            m_BloodTrail.Play();
             StartCoroutine(FallToGround(destroyTimer));
             m_Rigidbody2D.simulated = false;
             m_Collided = true;

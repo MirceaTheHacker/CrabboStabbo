@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private Health m_Health;
     private float m_Horizontal;
     private string[] m_InteractibleTags = {"Ground", "Enemy", "Knife", "Lava"};
-    private Vector3 m_LastGroundedPostion;
+    private Vector2 m_LastGroundedPostion;
     private PlayerFXManager m_FXManager;
     private bool m_MeleeInCooldown = false;
     private SpriteRenderer m_Image;
@@ -42,11 +42,8 @@ public class PlayerController : MonoBehaviour
     private void Update() {
         m_Horizontal = Input.GetAxis("Horizontal");
         
-        if(!Mathf.Approximately(m_Horizontal,0f))
-        {
-            m_LookingDirection.Set(m_Horizontal,0f);
-            m_LookingDirection.Normalize();
-        }
+        DirectionSwitcher();
+
         if(Input.GetButtonDown("Jump") && CheckPlayerAboveSurface() && onASurface)
         {
             m_Rigidbody2D.AddForce(new Vector2(0f,jumpVelocity), ForceMode2D.Impulse);
@@ -66,6 +63,24 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(CheckIfFellOff());
     }
 
+    private void DirectionSwitcher() {
+        if(!Mathf.Approximately(m_Horizontal,0f))
+        {
+            m_LookingDirection.Set(m_Horizontal,0f);
+            m_LookingDirection.Normalize();
+            if (m_LookingDirection.x == 1 && KnifeSpawnPoint.transform.localPosition.x < 0) {
+                KnifeLocalSpawnPointSwitcher();
+            } if (m_LookingDirection.x == -1 && KnifeSpawnPoint.transform.localPosition.x > 0) {
+                KnifeLocalSpawnPointSwitcher();
+            }
+        }
+    }
+
+    private void KnifeLocalSpawnPointSwitcher() {
+        KnifeSpawnPoint.transform.localPosition = new Vector2 (-KnifeSpawnPoint.transform.localPosition.x,
+                 KnifeSpawnPoint.transform.localPosition.y);
+    }
+
     private void FixedUpdate() {
        m_Rigidbody2D.transform.position += new Vector3(m_Horizontal,0f,0f) * movementSpeed * Time.deltaTime;
     }
@@ -78,12 +93,30 @@ public class PlayerController : MonoBehaviour
         knifeController.m_PlayerInfo = this;
     }
 
+    private Vector2 KnifeNoise(){
+        float yNoise = 0f;
+        yNoise = Random.Range(KnifeSpawnPoint.transform.position.y - 0.1f, KnifeSpawnPoint.transform.position.y + 0.1f);
+        return new Vector2(KnifeSpawnPoint.transform.position.x, yNoise);
+    }
+
     private void Melee() {
         if(m_MeleeInCooldown) return;
         m_Animator.SetTrigger("melee");
         StartCoroutine(MeleeCooldown());
         Debug.DrawRay(gameObject.transform.position, m_LookingDirection * m_MeleeRange, Color.green, 2f);
         Debug.DrawRay(gameObject.transform.position, Vector2.up * m_Image.bounds.size.y, Color.green, 2f);
+        StartCoroutine(MeleeAttackCoroutine());
+    }
+
+    private IEnumerator MeleeAttackCoroutine() {
+        // if we haven't hit something we wait for 0.1 seconds because we want to consider the whole animation
+        if (!HitSomething()) {
+        yield return new WaitForSeconds(0.1f);
+        HitSomething();
+        }
+    }
+
+    private bool HitSomething() {
         RaycastHit2D[] hits = Physics2D.BoxCastAll(gameObject.transform.position, new Vector2(m_MeleeRange, m_Image.bounds.size.y), 0f, m_LookingDirection, m_MeleeRange,
         LayerMask.GetMask("Enemy", "MonsterThrowable"));
         ArrayList uniqueEnemies = FilterDuplicateColliders(hits);
@@ -94,8 +127,15 @@ public class PlayerController : MonoBehaviour
                 npcController.m_PlayerInfo = this;
             } else if (enemy.tag == "MonsterThrowable") {
                 MonsterThrowableController throwableController = enemy.GetComponent<MonsterThrowableController>();
-                throwableController.DestroyMe();
+                throwableController.OnMeleeHit();
+                throwableController.m_PlayerInfo = this;
+                //throwableController.DestroyMe();
             }
+        }
+        if(hits != null) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -119,14 +159,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(m_MeleeCooldown);
         m_MeleeInCooldown = false;
     }
-
-    private Vector2 KnifeNoise(){
-        float yNoise = 0f;
-        yNoise = Random.Range(KnifeSpawnPoint.transform.position.y - 0.1f, KnifeSpawnPoint.transform.position.y + 0.1f);
-        return new Vector2(KnifeSpawnPoint.transform.position.x, yNoise);
-    }
-
-
 
     private void OnCollisionStay2D(Collision2D other) {
         foreach(string tag in m_InteractibleTags) {
@@ -201,7 +233,7 @@ public class PlayerController : MonoBehaviour
     private bool CheckPlayerAboveSurface()
     {
         foreach(GameObject groundChecker in m_GroundCheckers) {
-            if(CheckObjectAboveSurface(groundChecker)) {
+            if(CheckPositionAboveSurface(groundChecker.transform.position)) {
                 return true;
             }
         }
@@ -211,7 +243,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateGroundedPosition() {
         bool bothGroundersOK = true;
         foreach(GameObject groundChecker in m_GroundCheckers) {
-            if(!CheckObjectAboveSurface(groundChecker)) {
+            if(!CheckPositionAboveSurface(groundChecker.transform.position)) {
                 bothGroundersOK = false;
             }
         }
@@ -220,29 +252,39 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool CheckObjectAboveSurface(GameObject obj){
-        RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Enemy","Lava"));
+    private bool CheckPositionAboveSurface(Vector2 position){
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Enemy","Lava"));
         if(hit.collider != null) {
             return true;
         }
         return false;
     }
 
-    // private bool CheckObjectAboveSurface(GameObject obj){
-    //     RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Enemy","Lava"));
-    //     if(hit.collider != null) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
     private IEnumerator CheckIfFellOff(){
         yield return new WaitForFixedUpdate();
         if(m_Rigidbody2D.position.y < -10)
         {
             m_Rigidbody2D.velocity = Vector2.zero;
-            m_Rigidbody2D.transform.position = m_LastGroundedPostion;
+            Respawn();
             DamagePlayer(1);
+        }
+    }
+
+    private void Respawn() {
+        while(!EmptySpace(m_LastGroundedPostion)) {
+            Vector2 newPosition = new Vector2 (Random.Range(m_LastGroundedPostion.x + 2f, m_LastGroundedPostion.x - 2f),m_LastGroundedPostion.y);
+            if(EmptySpace(newPosition) && CheckPositionAboveSurface(newPosition)) {
+                m_LastGroundedPostion = newPosition;
+            }
+        }
+        m_Rigidbody2D.transform.position = m_LastGroundedPostion;
+    }
+
+    private bool EmptySpace(Vector2 position) {
+        if (Physics2D.BoxCast(position, new Vector2(1f,1f), 0f, Vector2.up, 1f, LayerMask.GetMask("Enemy")).collider != null) {
+            return false;
+        } else {
+            return true;
         }
     }
 

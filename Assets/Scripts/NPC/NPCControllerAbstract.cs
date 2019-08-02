@@ -64,7 +64,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_Wait = false;
     }
 
-    internal virtual void FastTurn() {
+    internal virtual void InstantTurn() {
         m_LookingDirection = -m_LookingDirection;
         DetectorsSwitcher();
     }
@@ -154,12 +154,11 @@ public abstract class NPCControllerAbstract : MonoBehaviour
 
     private bool PlayerDetected() {
         foreach (GameObject playerDetectector in m_PlayerDetectors) {
-            float distance = 6f;
-            Debug.DrawRay(playerDetectector.transform.position, m_LookingDirection * distance, Color.red, 1f);
+            Debug.DrawRay(playerDetectector.transform.position, m_LookingDirection * m_SightDistance, Color.red, 1f);
             RaycastHit2D hit = Physics2D.Raycast(playerDetectector.transform.position, m_LookingDirection, 
             Mathf.Infinity, LayerMask.GetMask("Player","Ground"));
             if(hit.collider == null) return false;
-            if(hit.distance < distance && hit.collider.tag == "Player") {
+            if(hit.collider.tag == "Player") {
                 m_PlayerInfo = hit.collider.GetComponent<PlayerController>();
                 return true;
             }
@@ -178,7 +177,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
                 || (gameObject.transform.position.x - m_PlayerInfo.transform.position.x < 0 
                 && m_LookingDirection.x != 1)
                     ){
-                    FastTurn();
+                    InstantTurn();
                     yield return new WaitForSeconds(0.5f);
                 }
                 if (Mathf.Abs(gameObject.transform.position.x - m_PlayerInfo.transform.position.x) > m_SightDistance) break;
@@ -190,7 +189,6 @@ public abstract class NPCControllerAbstract : MonoBehaviour
             }
             m_LockedOnPlayer = false;
         }
-       
     }
 
     protected abstract IEnumerator PlayerDetectedHandler();

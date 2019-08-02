@@ -77,8 +77,8 @@ public class ChefController : NPCControllerAbstract
         }
     }
 
-    internal override void FastTurn(){
-        base.FastTurn();
+    internal override void InstantTurn(){
+        base.InstantTurn();
         m_Animator.SetFloat("LookX", m_LookingDirection.x);
     }
 }

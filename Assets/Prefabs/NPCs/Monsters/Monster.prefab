@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9135821116246838594}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GrassFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 4453201873928445428}
   - component: {fileID: 8198082453233873467}
   - component: {fileID: 780401819558777730}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: BurstLavaEmission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6183,7 +6183,7 @@ MonoBehaviour:
   - {fileID: 8852324153581771046}
   m_DetectingTrigger: {fileID: 3958671311167896132}
   m_StayLockedOnPlayerTime: 3
-  m_SightDistance: 6
+  m_SightDistance: 10
   m_LittleMonster: {fileID: 3544940114927023815, guid: f215e12de6ec9484faaf5173be0b6e85,
     type: 3}
   m_OnHitParts:
@@ -6257,7 +6257,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 5
   MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
@@ -6382,7 +6382,7 @@ GameObject:
   - component: {fileID: 2417149017844196617}
   - component: {fileID: 2443454394641359868}
   - component: {fileID: 830807836841378503}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LoopLavaEmission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11288,8 +11288,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 3.033029, y: 1.4387783}
-  m_Size: {x: 6.171888, y: 2.0855079}
+  m_Offset: {x: 4.869528, y: 1.4387783}
+  m_Size: {x: 9.844899, y: 2.085508}
   m_Direction: 1
 --- !u!1 &4272178448137221650
 GameObject:
@@ -11300,7 +11300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7334992253915309997}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ParticleFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11334,7 +11334,7 @@ GameObject:
   - component: {fileID: 9143626390469854396}
   - component: {fileID: 2137943328093718919}
   - component: {fileID: 8624518079292815633}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: JumpingBurstRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16177,7 +16177,7 @@ GameObject:
   - component: {fileID: 8297068331015396360}
   - component: {fileID: 2517197735924294146}
   - component: {fileID: 6056488465188113982}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LandingBurstRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21372,7 +21372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7237883631578354620}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LavaFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21406,7 +21406,7 @@ GameObject:
   - component: {fileID: 581494447097324604}
   - component: {fileID: 1183403549439507323}
   - component: {fileID: 1819783826840671343}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LandingBurstLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26336,7 +26336,7 @@ GameObject:
   - component: {fileID: 3755534820851388927}
   - component: {fileID: 2897633557732784506}
   - component: {fileID: 1659904379777530826}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: JumpingBurstLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31147,7 +31147,7 @@ GameObject:
   - component: {fileID: 5077995517350246411}
   - component: {fileID: 1582110143204123590}
   - component: {fileID: 580740147590931317}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: sadBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31455,7 +31455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3677635249936692588}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GrassBursts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31491,7 +31491,7 @@ GameObject:
   - component: {fileID: 3394644897205214412}
   - component: {fileID: 5136347819251541908}
   - component: {fileID: 547729834622297442}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GrassParticlesRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36273,7 +36273,7 @@ GameObject:
   - component: {fileID: 5618501388456204385}
   - component: {fileID: 3322181087432108301}
   - component: {fileID: 7021947806556966796}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GrassParticlesLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
