@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 m_LastGroundedPostion;
     private PlayerFXManager m_FXManager;
     private bool m_MeleeInCooldown = false;
+    private SpriteRenderer m_Image;
 
     void Awake()
     {
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
         m_Health = GetComponent<Health>();
         m_LastGroundedPostion = m_Rigidbody2D.transform.position;
         m_FXManager = GetComponent<PlayerFXManager>();
+        m_Image = GetComponent<SpriteRenderer>();
     }
 
     private void Update() {
@@ -80,23 +82,36 @@ public class PlayerController : MonoBehaviour
         if(m_MeleeInCooldown) return;
         m_Animator.SetTrigger("melee");
         StartCoroutine(MeleeCooldown());
-        foreach (GameObject detector in m_EnemyDetectors) {
-            Debug.DrawRay(detector.transform.position, m_LookingDirection * m_MeleeRange, Color.green, 2f);
-            RaycastHit2D hit = Physics2D.Raycast(detector.transform.position, m_LookingDirection, m_MeleeRange,
-             LayerMask.GetMask("Enemy", "MonsterThrowable"));
-            if (hit.collider != null) {
-                if (hit.collider.gameObject.tag == "Enemy") {
-                NPCControllerAbstract npcController = hit.collider.GetComponentInParent<NPCControllerAbstract>();
+        Debug.DrawRay(gameObject.transform.position, m_LookingDirection * m_MeleeRange, Color.green, 2f);
+        Debug.DrawRay(gameObject.transform.position, Vector2.up * m_Image.bounds.size.y, Color.green, 2f);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(gameObject.transform.position, new Vector2(m_MeleeRange, m_Image.bounds.size.y), 0f, m_LookingDirection, m_MeleeRange,
+        LayerMask.GetMask("Enemy", "MonsterThrowable"));
+        ArrayList uniqueEnemies = FilterDuplicateColliders(hits);
+        foreach (GameObject enemy in uniqueEnemies) {
+            if (enemy.tag == "Enemy") {
+                NPCControllerAbstract npcController = enemy.GetComponentInParent<NPCControllerAbstract>();
                 npcController.Attacked(m_MeleeStrength, this);
                 npcController.m_PlayerInfo = this;
-                } else if (hit.collider.gameObject.tag == "MonsterThrowable") {
-                    MonsterThrowableController throwableController = hit.collider.gameObject.GetComponent<MonsterThrowableController>();
-                    throwableController.DestroyMe();
-                }
-
-                break;
+            } else if (enemy.tag == "MonsterThrowable") {
+                MonsterThrowableController throwableController = enemy.GetComponent<MonsterThrowableController>();
+                throwableController.DestroyMe();
             }
         }
+    }
+
+    private ArrayList FilterDuplicateColliders(RaycastHit2D[] hits) {
+        // we need to check if the colliders found belong to different gameobjects with transform.root
+        ArrayList uniqueEnemies = new ArrayList();
+        foreach (RaycastHit2D hit in hits) {
+            GameObject currentEnemy = hit.collider.gameObject;
+            while(currentEnemy.tag == "Untagged") {
+                currentEnemy = currentEnemy.transform.parent.gameObject;
+            }
+            if (!uniqueEnemies.Contains(currentEnemy)) {
+                uniqueEnemies.Add(currentEnemy);
+            }
+        }
+        return uniqueEnemies;
     }
 
     private IEnumerator MeleeCooldown() {

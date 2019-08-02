@@ -12,9 +12,8 @@ public class ChefController : NPCControllerAbstract
         m_Animator.SetFloat("LookX",m_LookingDirection.x);
     }
 
-    protected override void Update() {
+    private void Update() {
         if(!isAlive) return;
-        base.Update();
         AttackChecker();
     }
 

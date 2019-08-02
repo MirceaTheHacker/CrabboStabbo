@@ -29,6 +29,7 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
         base.OnDeath();
         m_Animator.SetBool("IsDead", true);
         SpawnEnemies();
+        Debug.Log("Enemies spawned");
     }
 
     protected override void Damage(int value){

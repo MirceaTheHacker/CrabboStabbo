@@ -17,7 +17,8 @@ public class MonsterThrowableController : MonoBehaviour
     }
 
     private void Start() {
-        m_Rigidbody2D.AddForce(direction,ForceMode2D.Force);
+        m_Rigidbody2D.AddForce(direction,ForceMode2D.Impulse);
+        m_Rigidbody2D.AddTorque(90);
     }
 
     private void FixedUpdate() {

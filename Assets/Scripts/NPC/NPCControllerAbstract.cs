@@ -38,13 +38,6 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_DetectingTriggerCapsuleCollider  = m_DetectingTrigger.GetComponent<CapsuleCollider2D>();
     }
 
-    protected virtual void Update() {
-        if(!isAlive) return;
-        if (m_HealthPoints <= 0){
-            OnDeath();
-        }
-    }
-
     private void FixedUpdate() {
         if (!isAlive || (m_Wait && (!m_LockedOnPlayer))) return;
         if(CanWalk() || (m_LockedOnPlayer))
@@ -122,11 +115,12 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         if(m_HealthPoints > 0) {
             m_FXManager.PlayHitSoundFX();
         } else {
-            m_FXManager.PlayDeathSoundFX();
+            OnDeath();
         }
     }
 
     protected virtual void OnDeath() {
+        m_FXManager.PlayDeathSoundFX();
         SetAllCollidersStatus(false);
         m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         StartCoroutine(Utils.FadeGameObject(gameObject, fadeDuration));
@@ -153,7 +147,9 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_PlayerInfo = playerController;
         Damage(hitStrenght);
         Push(hitStrenght);
-        StartCoroutine(PlayerDetectedHandler());
+        if(isAlive) {
+            StartCoroutine(PlayerDetectedHandler());
+        }
     }
 
     private bool PlayerDetected() {

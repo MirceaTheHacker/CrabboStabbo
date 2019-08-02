@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 0.75
   m_ProximitySensor: {fileID: 2200327964297181875}
-  m_HealthPoints: 1
+  m_HealthPoints: 2
   m_Strength: 1
   m_PushingCoefficient: 4
   m_PlayerDetectors:
