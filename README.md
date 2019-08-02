@@ -20,6 +20,6 @@ Animations and Tiles:
 This project contains LFS files so in order for those to be downloaded you have to clone the repository (you can not simply download the .ZIP file)
 
 # TO DO LIST
-•	Add audio  
+•	Add multiple different audio  
 •	Configure UI/UX  
 •	Add more mechanics
