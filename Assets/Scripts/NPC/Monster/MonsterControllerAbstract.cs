@@ -48,8 +48,11 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
     private IEnumerator Throw(){
         if (!throwing) {
             throwing = true;
+            yield return new WaitForSeconds(1f); // give the player 1 second to prepare
             while(m_LockedOnPlayer && isAlive) {
-                yield return new WaitForSeconds(1f);
+                while (m_PlayerInfo.m_IsImmune) {
+                    yield return new WaitForEndOfFrame();
+                }
                 GameObject throwableInstance = Instantiate (m_ThrowablePrefab,
                     m_SpawnThrowableLocation.transform.position,
                     Quaternion.identity);

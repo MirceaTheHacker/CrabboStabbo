@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float m_MeleeRange = 2f;
     public int m_MeleeStrength = 1;
     public float m_MeleeCooldown = 0.5f;
+    public float m_MeleeAnimationDuration = 0.1f; // continuesly check for collisions during this time
     
     internal bool m_IsImmune = false;
     private Rigidbody2D m_Rigidbody2D;
@@ -105,14 +106,15 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(MeleeCooldown());
         Debug.DrawRay(gameObject.transform.position, m_LookingDirection * m_MeleeRange, Color.green, 2f);
         Debug.DrawRay(gameObject.transform.position, Vector2.up * m_Image.bounds.size.y, Color.green, 2f);
-        StartCoroutine(MeleeAttackCoroutine());
+        MeleeContinuousCollisionChecker();
     }
 
-    private IEnumerator MeleeAttackCoroutine() {
-        // if we haven't hit something we wait for 0.1 seconds because we want to consider the whole animation
-        if (!HitSomething()) {
-        yield return new WaitForSeconds(0.1f);
-        HitSomething();
+    private void MeleeContinuousCollisionChecker() {
+        float startTime = Time.time;
+        while(Time.time - startTime < m_MeleeAnimationDuration) {
+            if (HitSomething()) {
+            break;
+            }
         }
     }
 
@@ -129,7 +131,6 @@ public class PlayerController : MonoBehaviour
                 MonsterThrowableController throwableController = enemy.GetComponent<MonsterThrowableController>();
                 throwableController.OnMeleeHit();
                 throwableController.m_PlayerInfo = this;
-                //throwableController.DestroyMe();
             }
         }
         if(hits != null) {

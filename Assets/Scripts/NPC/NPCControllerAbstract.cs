@@ -40,10 +40,10 @@ public abstract class NPCControllerAbstract : MonoBehaviour
 
     private void FixedUpdate() {
         if (!isAlive || (m_Wait && (!m_LockedOnPlayer))) return;
-        if(CanWalk() || (m_LockedOnPlayer))
+        if(CanWalk() || ((m_LockedOnPlayer) && CanFollow()))
         {
             m_Rigidbody2D.transform.position += new Vector3(m_LookingDirection.x,0f,0f) * movementSpeed * Time.deltaTime;
-        } else {
+        } else if (!m_LockedOnPlayer){
             StartCoroutine(TurnAround());
         }
     }
@@ -95,9 +95,22 @@ public abstract class NPCControllerAbstract : MonoBehaviour
 
     private bool CanWalk() {
         if(WalkingIntoSomething()) return false;
-        RaycastHit2D hit = Physics2D.Raycast(m_ProximitySensor.position, Vector2.down, 2f, LayerMask.GetMask("Ground"));
+        RaycastHit2D hit = Physics2D.Raycast(m_ProximitySensor.position, Vector2.down, 2f, LayerMask.GetMask("Ground","Lava"));
         if(hit.collider != null) {
+            if(hit.collider.tag == "Ground") {
             return true;
+            }
+        }
+        return false;
+    }
+
+    private bool CanFollow() {
+        if(WalkingIntoSomething()) return false;
+        RaycastHit2D hit = Physics2D.Raycast(m_ProximitySensor.position, Vector2.down, Mathf.Infinity, LayerMask.GetMask("Ground","Lava"));
+        if(hit.collider != null) {
+            if(hit.collider.tag == "Ground") {
+            return true;
+            }
         }
         return false;
     }
@@ -170,7 +183,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         if(!m_LockedOnPlayer) {
             m_LockedOnPlayer = true;
             float startTime = Time.time;
-            while(Time.time - startTime < m_StayLockedOnPlayerTime && !m_PlayerInfo.m_IsImmune) {
+            while(Time.time - startTime < m_StayLockedOnPlayerTime) {
                 if (
                     (gameObject.transform.position.x - m_PlayerInfo.transform.position.x > 0 
                 && m_LookingDirection.x != -1) 

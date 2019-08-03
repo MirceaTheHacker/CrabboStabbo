@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 5732036033682071385, guid: 5cf9966953b420a40a57d360fa79b113,
         type: 3}
       propertyPath: m_Name
-      value: MonsterThrowable
+      value: MonsterThrowable Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3065701328081514027, guid: 5cf9966953b420a40a57d360fa79b113,
         type: 3}
@@ -81,6 +81,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.04136461
+      objectReference: {fileID: 0}
+    - target: {fileID: 7432798050150145011, guid: 5cf9966953b420a40a57d360fa79b113,
+        type: 3}
+      propertyPath: yVellocityCompensation
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cf9966953b420a40a57d360fa79b113, type: 3}

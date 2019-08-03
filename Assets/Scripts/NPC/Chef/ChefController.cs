@@ -24,15 +24,9 @@ public class ChefController : NPCControllerAbstract
         m_Animator.SetFloat("LookX", m_LookingDirection.x);
     }
 
-    private IEnumerator WaitForDieingAnimation() {
-        m_Animator.SetTrigger("Dies");
-        yield return new WaitForSeconds(0.5f);
-        base.OnDeath();
-    }
-
     protected override void OnDeath() {
-        isAlive = false;
-        StartCoroutine(WaitForDieingAnimation());
+        m_Animator.SetTrigger("Dies");
+        base.OnDeath();
     }
     
     private void AttackChecker() {

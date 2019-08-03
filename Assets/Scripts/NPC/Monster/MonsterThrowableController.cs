@@ -7,6 +7,7 @@ public class MonsterThrowableController : MonoBehaviour
     public float m_Velocity = 5f;
     public float m_DestroyTimer = 5f;
     public int m_Damage = 1;
+    public float yVellocityCompensation = 2f;
 
     private Rigidbody2D m_Rigidbody2D;
     private Vector3 direction;
@@ -22,7 +23,7 @@ public class MonsterThrowableController : MonoBehaviour
     }
 
     private void Start() {
-        m_Rigidbody2D.AddForce(new Vector2(direction.x, 1),ForceMode2D.Impulse);
+        m_Rigidbody2D.AddForce(new Vector2(direction.x, yVellocityCompensation / 20),ForceMode2D.Impulse);
         m_Rigidbody2D.AddTorque(-10);
     }
 
@@ -43,11 +44,11 @@ public class MonsterThrowableController : MonoBehaviour
         meleeHit = true;
         spriteRenderer.color = Color.red;
         gameObject.layer = 16;
-        m_Rigidbody2D.AddForce(new Vector2(direction.x, 2),ForceMode2D.Impulse);
+        m_Rigidbody2D.AddForce(new Vector2(direction.x, yVellocityCompensation),ForceMode2D.Impulse);
         m_Rigidbody2D.AddTorque(20);
     }
 
-    private void OnCollisionStay2D(Collision2D other) {
+    private void OnCollisionEnter2D(Collision2D other) {
         if(!meleeHit) {
             if(other.gameObject.tag == "Player") {
             PlayerController playerController = other.gameObject.GetComponent<PlayerController>();

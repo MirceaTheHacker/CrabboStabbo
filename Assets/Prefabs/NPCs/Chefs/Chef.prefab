@@ -14653,7 +14653,7 @@ GameObject:
   - component: {fileID: 3896797097823008525}
   m_Layer: 10
   m_Name: HatCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14801,7 +14801,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1000
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -14871,7 +14871,7 @@ MonoBehaviour:
   m_ProximitySensor: {fileID: 8399616485325457434}
   m_HealthPoints: 7
   m_Strength: 2
-  m_PushingCoefficient: 2
+  m_PushingCoefficient: 4
   m_PlayerDetectors:
   - {fileID: 591821068}
   - {fileID: 858584241}
@@ -14925,7 +14925,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 5
   MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
