@@ -13,34 +13,24 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerController m_PlayerController;
     private Rigidbody2D m_Rigidbody2D;
+    private PlayerMelee m_PlayerMelee;
+    private PlayerThrow m_PlayerThrow;
 
     internal PlayerFXManager m_PlayerFXManager;
-    internal HealthManager m_Health;
+    internal HealthManager m_HealthManager;
     internal bool m_IsImmune = false;
 
     private void Awake() {
         m_PlayerController = GetComponent<PlayerController>();
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_PlayerFXManager = GetComponent<PlayerFXManager>();
+        m_PlayerMelee = GetComponent<PlayerMelee>();
+        m_PlayerThrow = GetComponent<PlayerThrow>();
     }
 
     private void Start() {
         SetUIManager();
         SetGravityManager();
-    }
-
-    private void Update() {
-        StartCoroutine(CheckIfFellOff());
-    }
-
-    private IEnumerator CheckIfFellOff(){
-        yield return new WaitForFixedUpdate();
-        if(m_Rigidbody2D.position.y < -10)
-        {
-            m_Rigidbody2D.velocity = Vector2.zero;
-            m_PlayerController.Respawn();
-            DamagePlayer(1);
-        }
     }
 
     private void SetGravityManager(){
@@ -54,9 +44,24 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void SetHealth() {
-        m_Health.maxHealth = m_MaxHealth;
-        m_Health.curHealth = m_CurHealth;
-        m_Health.InitializeHarts();
+        m_HealthManager.maxHealth = m_MaxHealth;
+        m_HealthManager.curHealth = m_CurHealth;
+        m_HealthManager.InitializeHarts();
+    }
+
+    private void Update() {
+        CheckIfFellOff();
+    }
+
+    private void CheckIfFellOff(){
+        if(m_Rigidbody2D.position.y < -10)
+        {
+            DamagePlayer(1);
+            if(m_CurHealth > 0) {
+                m_Rigidbody2D.velocity = Vector2.zero;
+                m_PlayerController.Respawn();
+            }
+        }
     }
 
     public void Attacked (int monsterStrength, Transform NPCTransform) {
@@ -84,7 +89,7 @@ public class PlayerManager : MonoBehaviour
             if(m_CurHealth <= 0) {
                 Restart();
             } else {
-                m_Health.UpdateHearts(-damageValue);
+                m_HealthManager.UpdateHearts(-damageValue);
             }
         }
     }
@@ -138,12 +143,17 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    private void HealPlayer(int healingValue) {
+        m_HealthManager.UpdateHearts(healingValue);
     }
 
-    private void HealPlayer(int healingValue) {
-        m_Health.UpdateHearts(healingValue);
+    private void Restart()
+    {
+        m_PlayerController.enabled = false;
+        m_PlayerFXManager.m_SFXAudioSource.enabled = false;
+        m_PlayerFXManager.m_WalkingAudioSource.enabled = false;
+        m_PlayerMelee.enabled = false;
+        m_PlayerThrow.enabled = false;
+        StartCoroutine(GameManager.Instance.GameOverCoroutine());
     }
 }

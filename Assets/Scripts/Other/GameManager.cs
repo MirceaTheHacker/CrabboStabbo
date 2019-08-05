@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     internal UIManager m_UIManager;
     internal GravityManager m_GravityManager;
+    internal Confiner m_Confiner;
 
     private void Awake() {
         if(Instance == null) {
@@ -20,5 +21,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+    }
+
+    internal IEnumerator GameOverCoroutine () {
+        m_UIManager.ShowGameOverUI();
+        m_Confiner.m_PolygonCollider2D.enabled = false;
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        m_UIManager.HideGameOverUI();
     }
 }

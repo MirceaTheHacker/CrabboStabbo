@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
         UpdateGroundedPosition();
     }
 
+
+
     private void UpdateLookingDirection() {
         if(!Mathf.Approximately(m_Horizontal,0f))
         {
