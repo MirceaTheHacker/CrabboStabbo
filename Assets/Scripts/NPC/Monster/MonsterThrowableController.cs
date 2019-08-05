@@ -14,7 +14,7 @@ public class MonsterThrowableController : MonoBehaviour
     private bool meleeHit = false;
     private SpriteRenderer spriteRenderer;
 
-    internal PlayerController m_PlayerInfo;
+    internal PlayerManager m_PlayerManager;
 
     private void Awake() {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -52,14 +52,14 @@ public class MonsterThrowableController : MonoBehaviour
         if(!meleeHit) {
             if(other.gameObject.tag == "Player") {
             PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-            playerController.Attacked(m_Damage, gameObject.transform);
+            playerController.m_PlayerManager.Attacked(m_Damage, gameObject.transform);
             DestroyMe();
             }
         } else {
             if(other.gameObject.tag == "Enemy") {
                 NPCControllerAbstract npcControllerAbstract =
                  other.gameObject.GetComponent<NPCControllerAbstract>();
-                npcControllerAbstract.Attacked(1, m_PlayerInfo);
+                npcControllerAbstract.Attacked(1, m_PlayerManager);
                 DestroyMe();
             }
         }

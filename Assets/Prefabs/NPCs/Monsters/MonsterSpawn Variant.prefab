@@ -24,6 +24,9 @@ MonoBehaviour:
   m_DetectingTrigger: {fileID: 3212094098158500611}
   m_StayLockedOnPlayerTime: 3
   m_SightDistance: 6
+  m_SpawnableKnive: {fileID: 3439002353672769162, guid: 34fcc5e6cdf2260478729a2cf21c79d5,
+    type: 3}
+  m_KniveSpawnPoint: {fileID: 1901539413081993877}
   m_LittleMonster: {fileID: 0}
   m_OnHitParts:
   - {fileID: 8243308581147859294}

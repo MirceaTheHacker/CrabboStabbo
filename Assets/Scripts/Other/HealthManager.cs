@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Health : MonoBehaviour
+public class HealthManager : MonoBehaviour
 {
     public Image[] imagesArray;
-    public int maxHealth;
-    public int curHealth;
     public Sprite fullHeartSprite;
     public Sprite emptyHeartSprite;
 
-    private void Start() {
+    internal int maxHealth;
+    internal int curHealth;
+
+    internal void InitializeHarts() {
         for (int i = 0; i < imagesArray.Length; i++)
         {
             if (i >= maxHealth) {
@@ -20,6 +21,8 @@ public class Health : MonoBehaviour
             }
             if (i >= curHealth) {
                 imagesArray[i].sprite = emptyHeartSprite;
+            } else if (i < curHealth) {
+                imagesArray[i].sprite = fullHeartSprite;
             }
         }
     }
@@ -28,8 +31,6 @@ public class Health : MonoBehaviour
         curHealth += damageValue;
         if(curHealth > maxHealth){
             curHealth = maxHealth;
-        } else if (curHealth <= 0) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         for (int i = 0; i < imagesArray.Length; i++)

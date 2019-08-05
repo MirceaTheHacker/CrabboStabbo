@@ -6184,6 +6184,9 @@ MonoBehaviour:
   m_DetectingTrigger: {fileID: 3958671311167896132}
   m_StayLockedOnPlayerTime: 3
   m_SightDistance: 10
+  m_SpawnableKnive: {fileID: 3439002353672769162, guid: 34fcc5e6cdf2260478729a2cf21c79d5,
+    type: 3}
+  m_KniveSpawnPoint: {fileID: 1178907602}
   m_LittleMonster: {fileID: 3544940114927023815, guid: f215e12de6ec9484faaf5173be0b6e85,
     type: 3}
   m_OnHitParts:
@@ -6192,7 +6195,7 @@ MonoBehaviour:
   - {fileID: 5436959666033631951}
   m_ThrowablePrefab: {fileID: 5732036033682071385, guid: 5cf9966953b420a40a57d360fa79b113,
     type: 3}
-  m_FireDelay: 1
+  m_FireDelay: 2
   m_SpawnThrowableLocation: {fileID: 1178907602}
   m_BigDamage: 2
 --- !u!95 &-1085593868394260872

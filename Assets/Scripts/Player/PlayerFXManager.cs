@@ -10,9 +10,8 @@ public class PlayerFXManager : FXManagerAbstract{
     private Rigidbody2D m_Rigidbody2D;
     private PlayerController m_PlayerController;
 
-
     private void Awake() {
-        m_Rigidbody2D = GetComponent <Rigidbody2D> ();
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_PlayerController = GetComponent<PlayerController>();
     }
 

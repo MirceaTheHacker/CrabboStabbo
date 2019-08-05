@@ -13,7 +13,7 @@ public class KnifeController : MonoBehaviour
     private Vector3 direction;
     private bool m_Collided = false;
     private KnifeFXManager m_FXManager;
-    internal PlayerController m_PlayerInfo;
+    internal PlayerManager m_PlayerManager;
 
 
     void Awake()
@@ -42,7 +42,7 @@ public class KnifeController : MonoBehaviour
         } else if(other.gameObject.tag == "Enemy")
         {
             NPCControllerAbstract npcController = other.gameObject.GetComponent<NPCControllerAbstract>();
-            npcController.Attacked(m_KnfieDamage, m_PlayerInfo);
+            npcController.Attacked(m_KnfieDamage, m_PlayerManager);
             knifeVelocity = 0f;
             m_Rigidbody2D.transform.SetParent(other.collider.gameObject.transform);
             m_BloodTrail.Play();

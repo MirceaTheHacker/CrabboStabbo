@@ -14641,6 +14641,36 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!1 &7202993897558866397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5508253519378510395}
+  m_Layer: 10
+  m_Name: KniveSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5508253519378510395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7202993897558866397}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.156, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3146242990036680292}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7455416437263338754
 GameObject:
   m_ObjectHideFlags: 0
@@ -14737,6 +14767,7 @@ Transform:
   - {fileID: 711551149}
   - {fileID: 3110846427002852080}
   - {fileID: 1932151091}
+  - {fileID: 5508253519378510395}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14871,7 +14902,7 @@ MonoBehaviour:
   m_ProximitySensor: {fileID: 8399616485325457434}
   m_HealthPoints: 7
   m_Strength: 2
-  m_PushingCoefficient: 4
+  m_PushingCoefficient: 2
   m_PlayerDetectors:
   - {fileID: 591821068}
   - {fileID: 858584241}
@@ -14879,6 +14910,9 @@ MonoBehaviour:
   m_DetectingTrigger: {fileID: 2051826051}
   m_StayLockedOnPlayerTime: 3
   m_SightDistance: 6
+  m_SpawnableKnive: {fileID: 3439002353672769162, guid: 34fcc5e6cdf2260478729a2cf21c79d5,
+    type: 3}
+  m_KniveSpawnPoint: {fileID: 7202993897558866397}
   m_AttackRange: 1
 --- !u!114 &-2769598572888054816
 MonoBehaviour:

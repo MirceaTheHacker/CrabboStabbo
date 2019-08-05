@@ -6,10 +6,16 @@ public class ChefController : NPCControllerAbstract
 {
     public float m_AttackRange = 2f;
 
+    private bool m_Aggroed = false;
+    private float m_ChaseSpeed;
+    private float m_NormalSpeed;
+
     protected override void Awake() {
         base.Awake();
         m_Animator.SetBool("IsWalking",true);
         m_Animator.SetFloat("LookX",m_LookingDirection.x);
+        m_ChaseSpeed = movementSpeed * 3;
+        m_NormalSpeed = movementSpeed;
     }
 
     private void Update() {
@@ -17,9 +23,9 @@ public class ChefController : NPCControllerAbstract
         AttackChecker();
     }
 
-    protected override IEnumerator TurnAround(){
+    protected override IEnumerator TurnAroundCoroutine(){
         m_Animator.SetBool("IsWalking",false);
-        yield return StartCoroutine(base.TurnAround());
+        yield return StartCoroutine(base.TurnAroundCoroutine());
         m_Animator.SetBool("IsWalking",true);
         m_Animator.SetFloat("LookX", m_LookingDirection.x);
     }
@@ -63,16 +69,33 @@ public class ChefController : NPCControllerAbstract
         } else return false;
     }
 
-    protected override IEnumerator PlayerDetectedHandler(){
+    protected override void PlayerDetectedHandler(){
         if(!m_LockedOnPlayer){
-        movementSpeed *= 3;
-        yield return StartCoroutine(LockOnPlayer());
-        movementSpeed /= 3;
+        StartCoroutine(AggroManagement());
+        StartCoroutine(LockOnPlayer());
         }
     }
 
-    internal override void InstantTurn(){
-        base.InstantTurn();
+    private IEnumerator AggroManagement() {
+        if(!m_Aggroed) {
+            m_Aggroed = true;
+            yield return new WaitForSeconds(1f);
+            movementSpeed = m_ChaseSpeed;
+            while (m_LockedOnPlayer) {
+                while (m_PlayerManager.m_IsImmune) {
+                    movementSpeed = m_NormalSpeed;
+                    yield return new WaitForFixedUpdate();
+                }
+                movementSpeed = m_ChaseSpeed;
+                yield return new WaitForFixedUpdate();
+            }
+            movementSpeed = m_NormalSpeed;
+            m_Aggroed = false;
+        }
+    }
+
+    internal override void TurnAround(){
+        base.TurnAround();
         m_Animator.SetFloat("LookX", m_LookingDirection.x);
     }
 }

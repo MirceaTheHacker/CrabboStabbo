@@ -14,6 +14,8 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     public GameObject m_DetectingTrigger;
     public float m_StayLockedOnPlayerTime = 3f;
     public float m_SightDistance = 6f;
+    public GameObject m_SpawnableKnive;
+    public GameObject m_KniveSpawnPoint;
 
     protected Rigidbody2D m_Rigidbody2D;
     protected internal Vector2 m_LookingDirection = new Vector2(1,0);
@@ -26,7 +28,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     private NPCFXAbstract m_FXManager;
     private CapsuleCollider2D m_DetectingTriggerCapsuleCollider;
     private bool m_LavaDamageCooldown = false;
-    internal PlayerController m_PlayerInfo;
+    internal PlayerManager m_PlayerManager;
     internal bool m_LockedOnPlayer = false;
 
 
@@ -44,7 +46,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         {
             m_Rigidbody2D.transform.position += new Vector3(m_LookingDirection.x,0f,0f) * movementSpeed * Time.deltaTime;
         } else if (!m_LockedOnPlayer){
-            StartCoroutine(TurnAround());
+            StartCoroutine(TurnAroundCoroutine());
         }
     }
 
@@ -55,26 +57,36 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_DetectingTriggerCapsuleCollider.offset.y);
     }
 
-    protected virtual IEnumerator TurnAround() {
+    protected virtual IEnumerator TurnAroundCoroutine() {
         m_Wait = true;
+        bool locked = false;
         float randomWait = Random.Range(3f, 5f);
-        yield return new WaitForSeconds(randomWait);
-        m_LookingDirection = -m_LookingDirection;
-        DetectorsSwitcher();
+        float startTime = Time.time;
+        while (Time.time - startTime < randomWait) {
+            if (m_LockedOnPlayer) {
+                locked = true;
+                m_Wait = false;
+                break;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        if(!locked) {
+            TurnAround();
+        }
         m_Wait = false;
     }
 
-    internal virtual void InstantTurn() {
+    internal virtual void TurnAround() {
         m_LookingDirection = -m_LookingDirection;
         DetectorsSwitcher();
     }
 
     private void OnCollisionStay2D(Collision2D other) {
         if(other.gameObject.tag == "Player") {
-            m_PlayerInfo = other.gameObject.GetComponent<PlayerController>();
-            m_PlayerInfo.Attacked(m_Strength, gameObject.transform);
+            m_PlayerManager = other.gameObject.GetComponent<PlayerManager>();
+            m_PlayerManager.Attacked(m_Strength, gameObject.transform);
             if(!m_LockedOnPlayer) {
-                StartCoroutine(PlayerDetectedHandler());
+                PlayerDetectedHandler();
             }
         }
     }
@@ -90,7 +102,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     }
 
     protected void AttackPlayer(PlayerController playerController) {
-        playerController.Attacked(m_Strength, gameObject.transform);  
+        playerController.m_PlayerManager.Attacked(m_Strength, gameObject.transform);  
     }
 
     private bool CanWalk() {
@@ -127,7 +139,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_HealthPoints -= hitStrenght;
         if(m_HealthPoints > 0) {
             m_FXManager.PlayHitSoundFX();
-        } else {
+        } else if (isAlive) {
             OnDeath();
         }
     }
@@ -138,6 +150,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         StartCoroutine(Utils.FadeGameObject(gameObject, fadeDuration));
         isAlive = false;
+        Instantiate(m_SpawnableKnive, m_KniveSpawnPoint.transform.position, Quaternion.identity);
     }
 
     private void SetAllCollidersStatus(bool active) {
@@ -148,7 +161,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     }
 
     private void Push(float hitStrength) {
-        Vector2 pushDirection = new Vector2(gameObject.transform.position.x - m_PlayerInfo.transform.position.x, 0f);
+        Vector2 pushDirection = new Vector2(gameObject.transform.position.x - m_PlayerManager.transform.position.x, 0f);
         pushDirection.Normalize();
         float Xcomponent = pushDirection.x * hitStrength * m_Rigidbody2D.mass / 2 * m_PushingCoefficient;
         Vector2 pushVector = new Vector2(Xcomponent,
@@ -156,12 +169,12 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_Rigidbody2D.AddForce(pushVector,ForceMode2D.Impulse);
     }
 
-    internal void Attacked(int hitStrenght, PlayerController playerController) {
-        m_PlayerInfo = playerController;
+    internal void Attacked(int hitStrenght, PlayerManager playerManager) {
+        m_PlayerManager = playerManager;
         Damage(hitStrenght);
         Push(hitStrenght);
         if(isAlive) {
-            StartCoroutine(PlayerDetectedHandler());
+            PlayerDetectedHandler();
         }
     }
 
@@ -172,7 +185,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
             Mathf.Infinity, LayerMask.GetMask("Player","Ground"));
             if(hit.collider == null) return false;
             if(hit.collider.tag == "Player") {
-                m_PlayerInfo = hit.collider.GetComponent<PlayerController>();
+                m_PlayerManager = hit.collider.GetComponent<PlayerManager>();
                 return true;
             }
         }
@@ -185,15 +198,15 @@ public abstract class NPCControllerAbstract : MonoBehaviour
             float startTime = Time.time;
             while(Time.time - startTime < m_StayLockedOnPlayerTime) {
                 if (
-                    (gameObject.transform.position.x - m_PlayerInfo.transform.position.x > 0 
+                    (gameObject.transform.position.x - m_PlayerManager.transform.position.x > 0 
                 && m_LookingDirection.x != -1) 
-                || (gameObject.transform.position.x - m_PlayerInfo.transform.position.x < 0 
+                || (gameObject.transform.position.x - m_PlayerManager.transform.position.x < 0 
                 && m_LookingDirection.x != 1)
                     ){
-                    InstantTurn();
+                    TurnAround();
                     yield return new WaitForSeconds(0.5f);
                 }
-                if (Mathf.Abs(gameObject.transform.position.x - m_PlayerInfo.transform.position.x) > m_SightDistance) break;
+                if (Mathf.Abs(gameObject.transform.position.x - m_PlayerManager.transform.position.x) > m_SightDistance) break;
                 if (PlayerDetected()) {
                     startTime = Time.time; // restart the timer everytime we see the player
                 }
@@ -204,13 +217,13 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         }
     }
 
-    protected abstract IEnumerator PlayerDetectedHandler();
+    protected abstract void PlayerDetectedHandler();
 
     private void OnTriggerStay2D(Collider2D other) {
         if(!m_LockedOnPlayer) {
             if (other.gameObject.tag == "Player") {
                 if(PlayerDetected()) {
-                    StartCoroutine(PlayerDetectedHandler());
+                    PlayerDetectedHandler();
                 }
             }
         }

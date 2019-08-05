@@ -38,10 +38,10 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
         StartCoroutine(OnHit());
     }
 
-    protected override IEnumerator PlayerDetectedHandler(){
+    protected override void PlayerDetectedHandler(){
         if (!m_LockedOnPlayer) {
         StartCoroutine(LockOnPlayer());
-        yield return StartCoroutine(Throw());
+        StartCoroutine(Throw());
         }
     }
 
@@ -50,7 +50,7 @@ public abstract class MonsterControllerAbstract : NPCControllerAbstract
             throwing = true;
             yield return new WaitForSeconds(1f); // give the player 1 second to prepare
             while(m_LockedOnPlayer && isAlive) {
-                while (m_PlayerInfo.m_IsImmune) {
+                while (m_PlayerManager.m_IsImmune) {
                     yield return new WaitForEndOfFrame();
                 }
                 GameObject throwableInstance = Instantiate (m_ThrowablePrefab,
