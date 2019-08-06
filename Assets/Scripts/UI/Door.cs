@@ -6,15 +6,14 @@ public class Door : MonoBehaviour
 {
     public Canvas m_Canvas;
     public AnimationClip m_Animation;
+    public AudioClip m_OpenSFX;
+    public AudioClip m_CloseSFX;
 
-    private Animator m_Animator;
+    
     private bool m_InProximity;
     private PlayerManager m_PlayerManager;
-    
-
-    private void Awake() {
-        m_Animator = GetComponent<Animator>();
-    }
+    private AudioSource m_AudioSource {get {return GetComponent<AudioSource>(); } }
+    private Animator m_Animator {get {return GetComponent<Animator>(); } }
 
     private void Update() {
         if(m_InProximity && Input.GetKeyDown(KeyCode.E)) {
@@ -43,7 +42,7 @@ public class Door : MonoBehaviour
         }
         m_PlayerManager.m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionY;
         Physics2D.IgnoreLayerCollision(8,11);
-        m_Animator.SetBool("open",true);
+        OpenDoor();
         m_PlayerManager.m_PlayerController.m_Animator.SetFloat("speed",0);
         yield return new WaitForSeconds(m_Animation.length);
         float direction = GetDirection();
@@ -53,11 +52,21 @@ public class Door : MonoBehaviour
             m_PlayerManager.movementSpeed * Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
-        m_Animator.SetBool("open",false);
+        CloseDoor();
         Physics2D.IgnoreLayerCollision(8, 11, false);
         m_PlayerManager.m_CapsuleCollider2D.enabled = false;
         yield return new WaitForSeconds(m_Animation.length);
         GameManager.Instance.GameWin();
+    }
+
+    private void OpenDoor() {
+        m_AudioSource.PlayOneShot(m_OpenSFX);
+        m_Animator.SetBool("open",true);
+    }
+
+    private void CloseDoor() {
+        m_AudioSource.PlayOneShot(m_CloseSFX);
+        m_Animator.SetBool("open",false);
     }
 
     private float GetDirection() {

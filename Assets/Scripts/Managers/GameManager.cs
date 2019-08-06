@@ -8,15 +8,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null;
 
-    internal UIManager m_UIManager;
-    internal GravityManager m_GravityManager;
+    internal UIManager m_UIManager { get { return GetComponentInChildren<UIManager> (); } }
+    internal GravityManager m_GravityManager {get {return GetComponentInChildren<GravityManager>(); } }
     internal Confiner m_Confiner;
 
     private void Awake() {
         if(Instance == null) {
             Instance = this;
-            m_UIManager = GetComponent<UIManager>();
-            m_GravityManager = GetComponent<GravityManager>();
+            // m_UIManager = GetComponent<UIManager>();
         } else if (Instance != this) {
             Destroy(gameObject);
         }
