@@ -14,6 +14,7 @@ public class GravityManager : MonoBehaviour
 
     void Update()
     {
+        if (m_PlayerManager == null) return;
         if(m_Rigidbody2D.velocity.y < 0 )
         {
             m_Rigidbody2D.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;

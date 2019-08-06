@@ -11,13 +11,13 @@ public class PlayerManager : MonoBehaviour
     public int m_AvailableKnives = 5;
     public float immunityTimer = 2f;
 
-    private PlayerController m_PlayerController;
-    private Rigidbody2D m_Rigidbody2D;
-    private PlayerMelee m_PlayerMelee;
-    private PlayerThrow m_PlayerThrow;
-
+    internal PlayerController m_PlayerController;
+    internal Rigidbody2D m_Rigidbody2D;
+    internal PlayerMelee m_PlayerMelee;
+    internal PlayerThrow m_PlayerThrow;
     internal PlayerFXManager m_PlayerFXManager;
     internal HealthManager m_HealthManager;
+    internal CapsuleCollider2D m_CapsuleCollider2D;
     internal bool m_IsImmune = false;
 
     private void Awake() {
@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
         m_PlayerFXManager = GetComponent<PlayerFXManager>();
         m_PlayerMelee = GetComponent<PlayerMelee>();
         m_PlayerThrow = GetComponent<PlayerThrow>();
+        m_CapsuleCollider2D = GetComponent<CapsuleCollider2D>();
     }
 
     private void Start() {
@@ -149,11 +150,17 @@ public class PlayerManager : MonoBehaviour
 
     private void Restart()
     {
-        m_PlayerController.enabled = false;
+        DisableScripts();
         m_PlayerFXManager.m_SFXAudioSource.enabled = false;
         m_PlayerFXManager.m_WalkingAudioSource.enabled = false;
-        m_PlayerMelee.enabled = false;
-        m_PlayerThrow.enabled = false;
         StartCoroutine(GameManager.Instance.GameOverCoroutine());
     }
+
+    internal void DisableScripts() {
+        m_PlayerController.enabled = false;
+        m_PlayerMelee.enabled = false;
+        m_PlayerThrow.enabled = false;
+    }
+
+
 }

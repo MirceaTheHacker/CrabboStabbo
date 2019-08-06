@@ -30,4 +30,27 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         m_UIManager.HideGameOverUI();
     }
+
+    internal void GameWin() {
+        m_UIManager.ShowGameWinUI();
+    }
+
+    public void PlayAgain() {
+        m_UIManager.HideGameWinUI();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PlayCredits() {
+        m_UIManager.HideGameWinUI();
+        StartCoroutine(m_UIManager.ShowCreditsUI());
+    }
+
+    public void PlayGame () {
+        SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
+    }
+
+    public void QuitGame () {
+        Debug.Log ("QUIT!");
+        Application.Quit();
+        }
 }

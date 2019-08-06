@@ -12,10 +12,10 @@ public class PlayerController : MonoBehaviour
     internal SpriteRenderer m_Image;
     internal float m_Horizontal;
     internal Vector2 m_LastGroundedPostion;
+    internal Animator m_Animator;
     
     private Rigidbody2D m_Rigidbody2D;
     private bool onASurface = false;
-    private Animator m_Animator;
     private string[] m_InteractibleTags = {"Ground", "Enemy", "Knife", "Lava"};
     
 
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool CheckPlayerAboveSurface()
+    internal bool CheckPlayerAboveSurface()
     {
         foreach(GameObject groundChecker in m_GroundCheckers) {
             if(CheckPositionAboveSurface(groundChecker.transform.position)) {
