@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3901b0bf75d11ca4e909ab69774775b4
+guid: 71fd15748e1afae40befcc36c5c78547
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,9 +45,9 @@ ScriptedImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
     normalMap: 0
     textureFormat: 0
     maxTextureSize: 0
@@ -62,7 +62,7 @@ ScriptedImporter:
     compressionQualitySet: 0
     textureFormatSet: 0
   spriteImportData:
-  - name: filler_1
+  - name: side_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -73,7 +73,7 @@ ScriptedImporter:
       y: 0
       width: 32
       height: 32
-    spriteID: a9424cf318e8d3d4e99e75220c41fb7f
+    spriteID: a26c5ab8e24093849b286b991177daa8
     internalID: 0
     spriteBone: []
     spriteOutline: []
@@ -86,6 +86,50 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
+  - name: Layer 1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 37
+      width: 32
+      height: 12
+    spriteID: e63e87435cda6f74e80f7170242426d5
+    internalID: 0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 17}
+  - name: Ground Shadow Light
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 57
+      width: 32
+      height: 8
+    spriteID: 4acde26e68e32df49b2e8c673688d659
+    internalID: 0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 43}
   - name: GroundBase
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -96,8 +140,8 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 32
-      height: 32
-    spriteID: d5bfc71cec1f474438ce46c8ec995b1b
+      height: 25
+    spriteID: 598165db801514d498f6734e9f67d65a
     internalID: 0
     spriteBone: []
     spriteOutline: []
@@ -111,7 +155,7 @@ ScriptedImporter:
   platformSettings:
   - name: Default
     overridden: 1
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -122,9 +166,9 @@ ScriptedImporter:
   mosaicLayers: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
-  importHiddenLayers: 0
+  importHiddenLayers: 1
   importedTextureWidth: 64
-  importedTextureHeight: 64
+  importedTextureHeight: 128
   documentSize: {x: 32, y: 32}
   textureActualWidth: 32
   textureActualHeight: 32
@@ -133,12 +177,26 @@ ScriptedImporter:
   characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
+  - name: Layer 1
+    spriteName: Layer 1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e63e87435cda6f74e80f7170242426d5
+    layerID: 70
+    mosaicPosition: {x: 4, y: 37}
+  - name: Ground Shadow Light
+    spriteName: Ground Shadow Light
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 4acde26e68e32df49b2e8c673688d659
+    layerID: 73
+    mosaicPosition: {x: 4, y: 57}
   - name: GroundBase
     spriteName: GroundBase
     isGroup: 0
     parentIndex: -1
-    spriteID: d5bfc71cec1f474438ce46c8ec995b1b
-    layerID: 67
+    spriteID: 598165db801514d498f6734e9f67d65a
+    layerID: 76
     mosaicPosition: {x: 4, y: 4}
   characterData:
     bones: []
@@ -146,5 +204,5 @@ ScriptedImporter:
     dimension: {x: 0, y: 0}
   boneGOs: []
   generateGOHierarchy: 0
-  textureAssetName: filler
-  prefabAssetName: filler_GO
+  textureAssetName: side
+  prefabAssetName: side_GO
