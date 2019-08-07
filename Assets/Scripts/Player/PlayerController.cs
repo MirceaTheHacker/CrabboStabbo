@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
     internal bool CheckPlayerAboveSurface()
     {
         foreach(GameObject groundChecker in m_GroundCheckers) {
-            if(CheckPositionAboveSurface(groundChecker.transform.position)) {
+            if(CheckGroundersOnASurface(groundChecker.transform.position)) {
                 return true;
             }
         }
@@ -99,9 +99,10 @@ public class PlayerController : MonoBehaviour
     }
 
     private void UpdateGroundedPosition() {
+        if(m_PlayerManager.m_IsImmune) return;
         bool bothGroundersOK = true;
         foreach(GameObject groundChecker in m_GroundCheckers) {
-            if(!CheckPositionAboveSurface(groundChecker.transform.position)) {
+            if(!CheckGroundersOnASurface(groundChecker.transform.position)) {
                 bothGroundersOK = false;
             }
         }
@@ -110,26 +111,36 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool CheckPositionAboveSurface(Vector2 position){
+    private bool CheckGroundersOnASurface(Vector2 position){
         RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 0.1f, LayerMask.GetMask("Ground","Knife","Enemy","Lava"));
         if(hit.collider != null) {
-            return true;
+            if(hit.collider.tag == "Lava") {
+                return false;
+            } else {
+                return true;
+            }
         }
         return false;
     }
 
     internal void Respawn() {
-        while(!EmptySpace(m_LastGroundedPostion)) {
-            Vector2 newPosition = new Vector2 (Random.Range(m_LastGroundedPostion.x + 2f, m_LastGroundedPostion.x - 2f),m_LastGroundedPostion.y);
-            if(EmptySpace(newPosition) && CheckPositionAboveSurface(newPosition)) {
-                m_LastGroundedPostion = newPosition;
+        int counter = 0;
+        while(!EmptySpace(m_LastGroundedPostion) && counter < 20) {
+            counter++;
+            Vector2 newPositionRight = new Vector2 (m_LastGroundedPostion.x + counter, m_LastGroundedPostion.y);
+             Vector2 newPositionLeft =  new Vector2 (m_LastGroundedPostion.x - counter, m_LastGroundedPostion.y);
+            if (EmptySpace(newPositionLeft) && CheckGroundersOnASurface(newPositionLeft)) {
+                m_LastGroundedPostion = newPositionLeft;
+            } else if (EmptySpace(newPositionRight) && CheckGroundersOnASurface(newPositionRight)) {
+                m_LastGroundedPostion = newPositionRight;
             }
         }
         m_Rigidbody2D.transform.position = m_LastGroundedPostion;
+        m_PlayerManager.SetStraightY();
     }
 
     private bool EmptySpace(Vector2 position) {
-        if (Physics2D.BoxCast(position, new Vector2(1f,1f), 0f, Vector2.up, 1f, LayerMask.GetMask("Enemy")).collider != null) {
+        if (Physics2D.BoxCast(position, new Vector2(0.1f,0.1f), 0f, Vector2.up, 0.1f, LayerMask.GetMask("Enemy")).collider != null) {
             return false;
         } else {
             return true;

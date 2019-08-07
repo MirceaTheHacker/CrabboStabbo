@@ -105,6 +105,10 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         }
 
+        SetStraightY();
+    }
+
+    internal void SetStraightY() {
         m_Rigidbody2D.transform.eulerAngles = new Vector3(0f,0f,0f);
         m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
@@ -142,7 +146,13 @@ public class PlayerManager : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other) {
         if(other.tag == "Lava") {
             DamagePlayer(1);
+            StartCoroutine(DelayRespawn());
         }
+    }
+
+    private IEnumerator DelayRespawn() {
+        yield return new WaitForSeconds(0.5f);
+        m_PlayerController.Respawn();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

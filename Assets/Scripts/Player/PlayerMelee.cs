@@ -30,19 +30,22 @@ public class PlayerMelee : MonoBehaviour
         if(m_MeleeInCooldown) return;
         m_PlayerManager.m_PlayerFXManager.MeleeSoundFX();
         m_Animator.SetTrigger("melee");
-        StartCoroutine(MeleeCooldown());
         Debug.DrawRay(gameObject.transform.position, m_PlayerController.m_LookingDirection * m_MeleeRange, Color.green, 2f);
-        Debug.DrawRay(gameObject.transform.position, Vector2.up * m_PlayerController.m_Image.bounds.size.y, Color.green, 2f);
-        MeleeContinuousCollisionChecker();
+        Debug.DrawRay(gameObject.transform.position, Vector2.up * m_MeleeRange, Color.green, 2f);
+        StartCoroutine(MeleeContinuousCollisionChecker());
+        StartCoroutine(MeleeCooldown());
     }
 
-    private void MeleeContinuousCollisionChecker() {
+    private IEnumerator MeleeContinuousCollisionChecker() {
         float startTime = Time.time;
         while(Time.time - startTime < m_MeleeAnimationDuration) {
             if (HitSomething()) {
             break;
             }
+            yield return new WaitForFixedUpdate();
         }
+        Debug.DrawRay(gameObject.transform.position, m_PlayerController.m_LookingDirection * m_MeleeRange, Color.white, 2f);
+        Debug.DrawRay(gameObject.transform.position, Vector2.up * m_MeleeRange, Color.white, 2f);
     }
 
     private IEnumerator MeleeCooldown() {
@@ -53,8 +56,8 @@ public class PlayerMelee : MonoBehaviour
 
     private bool HitSomething() {
         RaycastHit2D[] hits = Physics2D.BoxCastAll(gameObject.transform.position,
-         new Vector2(m_MeleeRange, m_PlayerController.m_Image.bounds.size.y), 0f,
-         m_PlayerController.m_LookingDirection, m_MeleeRange,
+         new Vector2(m_MeleeRange, m_MeleeRange), 0f,
+         m_PlayerController.m_LookingDirection, m_MeleeRange /2,
          LayerMask.GetMask("Enemy", "MonsterThrowable"));
          
         ArrayList uniqueEnemies = FilterDuplicateColliders(hits);
@@ -70,7 +73,7 @@ public class PlayerMelee : MonoBehaviour
                 m_PlayerManager.m_PlayerFXManager.OnThrowableHitSoundFX();
             }
         }
-        if(hits != null) {
+        if(uniqueEnemies.Count > 0) {
             return true;
         } else {
             return false;

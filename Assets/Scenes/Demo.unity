@@ -1164,7 +1164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 760132056}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.4748993, y: -1.3434696, z: 0}
+  m_LocalPosition: {x: -5.4748993, y: -1.6034698, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2131580378}
@@ -1344,7 +1344,7 @@ PrefabInstance:
     - target: {fileID: 8096168164175605175, guid: d413ef11f07c20e4dbc89ad5de4060e1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -24.33
+      value: -24.59
       objectReference: {fileID: 0}
     - target: {fileID: 8096168164175605175, guid: d413ef11f07c20e4dbc89ad5de4060e1,
         type: 3}
@@ -1391,24 +1391,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1735309184, guid: d413ef11f07c20e4dbc89ad5de4060e1, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.51519024
+    - target: {fileID: 1735309182, guid: d413ef11f07c20e4dbc89ad5de4060e1, type: 3}
+      propertyPath: m_AvailableKnives
+      value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: 1735309184, guid: d413ef11f07c20e4dbc89ad5de4060e1, type: 3}
-      propertyPath: m_Size.y
-      value: 1.0952599
-      objectReference: {fileID: 0}
-    - target: {fileID: 179419525773421123, guid: d413ef11f07c20e4dbc89ad5de4060e1,
-        type: 3}
-      propertyPath: m_MeleeSoundFX
-      value: 
-      objectReference: {fileID: 8300000, guid: abd20bb3905e088468f676648eda94b3, type: 3}
-    - target: {fileID: 179419525773421123, guid: d413ef11f07c20e4dbc89ad5de4060e1,
-        type: 3}
-      propertyPath: m_OnThrowableHitSoundFX
-      value: 
-      objectReference: {fileID: 8300000, guid: f3f940a2f63bd2a4c8f6eb02604b400a, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d413ef11f07c20e4dbc89ad5de4060e1, type: 3}
 --- !u!1 &872493605

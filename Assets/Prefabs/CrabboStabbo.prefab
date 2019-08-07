@@ -5070,8 +5070,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.34583345}
-  m_Size: {x: 0.9583333, y: 0.9583333}
+  m_Offset: {x: 0, y: 0.51519024}
+  m_Size: {x: 0.9583333, y: 1.0952599}
   m_Direction: 0
 --- !u!95 &549353202
 Animator:
@@ -5323,6 +5323,9 @@ MonoBehaviour:
   m_GettingHitSoundFX: {fileID: 8300000, guid: 579c095fa6233e24c9544e6c18916dc5, type: 3}
   m_CollectingKniveSoundFX: {fileID: 8300000, guid: 084bf2d054b45ef40ba7699f14b7a96c,
     type: 3}
+  m_MeleeSoundFX: {fileID: 8300000, guid: abd20bb3905e088468f676648eda94b3, type: 3}
+  m_OnThrowableHitSoundFX: {fileID: 8300000, guid: f3f940a2f63bd2a4c8f6eb02604b400a,
+    type: 3}
 --- !u!114 &1735309182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5457,7 +5460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6835124954328598824}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.224, y: 0.479, z: 0}
+  m_LocalPosition: {x: 0.605, y: 0.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8096168164175605175}

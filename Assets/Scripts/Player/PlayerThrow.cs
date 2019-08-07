@@ -21,6 +21,7 @@ public class PlayerThrow : MonoBehaviour
     }
 
     private void Update() {
+        UpdateLookingDirection();
         if (Input.GetButtonDown("Throw")) {
             Throw();
         }
