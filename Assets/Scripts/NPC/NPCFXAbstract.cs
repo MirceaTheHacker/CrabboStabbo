@@ -5,8 +5,8 @@ using UnityEngine;
 public class NPCFXAbstract : FXManagerAbstract
 {
     public AudioSource m_AudioSource;
-    public AudioClip[] hitClips;
-    public AudioClip[] deathClips;
+    public AudioClip[] m_HitClips;
+    public AudioClip[] m_DeathClips;
 
     private void Awake() {
         DisableGrassParticles();
@@ -17,12 +17,13 @@ public class NPCFXAbstract : FXManagerAbstract
     }
 
     public void PlayHitSoundFX() {
-        PlaySound(hitClips[(int)Random.Range(0f,hitClips.Length-1)]);
+        PlaySound(m_HitClips[(int)Random.Range(0f,m_HitClips.Length-1)]);
     }
 
     public void PlayDeathSoundFX() {
-        PlaySound(deathClips[(int)Random.Range(0f,deathClips.Length-1)]);
+        PlaySound(m_DeathClips[(int)Random.Range(0f,m_DeathClips.Length-1)]);
     }
+
 
     
 }

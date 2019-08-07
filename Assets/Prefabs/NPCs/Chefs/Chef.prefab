@@ -14932,10 +14932,10 @@ MonoBehaviour:
   - {fileID: 3930473909958462115}
   - {fileID: 3013168395690735341}
   m_AudioSource: {fileID: 8236321317243402235}
-  hitClips:
+  m_HitClips:
   - {fileID: 8300000, guid: 11e2abe1ad54f2945a83df68da16be6a, type: 3}
   - {fileID: 8300000, guid: 8d7f5962555dfcb4799ade5dbccb2dab, type: 3}
-  deathClips:
+  m_DeathClips:
   - {fileID: 8300000, guid: 9413ae596a06872488d56ea5e07d22fe, type: 3}
   - {fileID: 8300000, guid: c99e4cd64b626994fadbed9b38ae3689, type: 3}
 --- !u!82 &8236321317243402235

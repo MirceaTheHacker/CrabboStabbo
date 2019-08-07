@@ -6235,9 +6235,9 @@ MonoBehaviour:
   - {fileID: 3322181087432108301}
   - {fileID: 5136347819251541908}
   m_AudioSource: {fileID: 7715778726899921029}
-  hitClips:
+  m_HitClips:
   - {fileID: 8300000, guid: 44bd5b566ee6f1c47b84619474298c16, type: 3}
-  deathClips:
+  m_DeathClips:
   - {fileID: 8300000, guid: 8d7deac2f41c4bb409387ddf6b6007d3, type: 3}
 --- !u!82 &7715778726899921029
 AudioSource:

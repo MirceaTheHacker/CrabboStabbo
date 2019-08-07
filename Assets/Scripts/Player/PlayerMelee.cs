@@ -28,6 +28,7 @@ public class PlayerMelee : MonoBehaviour
 
     private void Melee() {
         if(m_MeleeInCooldown) return;
+        m_PlayerManager.m_PlayerFXManager.MeleeSoundFX();
         m_Animator.SetTrigger("melee");
         StartCoroutine(MeleeCooldown());
         Debug.DrawRay(gameObject.transform.position, m_PlayerController.m_LookingDirection * m_MeleeRange, Color.green, 2f);
@@ -66,6 +67,7 @@ public class PlayerMelee : MonoBehaviour
                 MonsterThrowableController throwableController = enemy.GetComponent<MonsterThrowableController>();
                 throwableController.OnMeleeHit();
                 throwableController.m_PlayerManager = m_PlayerManager;
+                m_PlayerManager.m_PlayerFXManager.OnThrowableHitSoundFX();
             }
         }
         if(hits != null) {

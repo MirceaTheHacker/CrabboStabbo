@@ -25,12 +25,13 @@ public abstract class NPCControllerAbstract : MonoBehaviour
     private Color alphaColor;
     private float fadeDuration = 1f;
     private bool m_Wait = false;
-    private NPCFXAbstract m_FXManager;
+    
     private CapsuleCollider2D m_DetectingTriggerCapsuleCollider;
     private bool m_LavaDamageCooldown = false;
+
     internal PlayerManager m_PlayerManager;
     internal bool m_LockedOnPlayer = false;
-
+    internal NPCFXAbstract m_FXManager;
 
     protected virtual void Awake()
     {

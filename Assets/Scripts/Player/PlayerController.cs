@@ -61,13 +61,15 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionStay2D(Collision2D other) {
-        foreach(string tag in m_InteractibleTags) {
-            if(tag == other.collider.tag) {
-                onASurface = true;
-            } 
-        }
+        if(m_PlayerManager.m_IsAlive) {
+            foreach(string tag in m_InteractibleTags) {
+                if(tag == other.collider.tag) {
+                    onASurface = true;
+                } 
+            }
 
-        m_PlayerManager.m_PlayerFXManager.OnCollisionStayWalkingSoundFXHandler(other, m_Horizontal);
+            m_PlayerManager.m_PlayerFXManager.OnCollisionStayWalkingSoundFXHandler(other, m_Horizontal);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other) {

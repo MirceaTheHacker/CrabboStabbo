@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     internal HealthManager m_HealthManager;
     internal CapsuleCollider2D m_CapsuleCollider2D;
     internal bool m_IsImmune = false;
+    internal bool m_IsAlive = true;
 
     private void Awake() {
         m_PlayerController = GetComponent<PlayerController>();
@@ -66,7 +67,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void Attacked (int monsterStrength, Transform NPCTransform) {
-        if(m_IsImmune) return;
+        if(m_IsImmune || !m_IsAlive) return;
         Push(monsterStrength, NPCTransform);
         DamagePlayer(monsterStrength);
     }
@@ -82,11 +83,11 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void DamagePlayer(int damageValue) {
-        if(!m_IsImmune)
+        if(!m_IsImmune && m_IsAlive)
         {
             m_CurHealth -= damageValue;
             StartCoroutine(ImmunityCooldown());
-            m_PlayerFXManager.HitSoundFX();
+            m_PlayerFXManager.GettingHitSoundFX();
             if(m_CurHealth <= 0) {
                 Restart();
             } else {
@@ -144,22 +145,31 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "LootableKnive") {
+            Destroy(other.gameObject);
+            m_AvailableKnives++;
+            m_PlayerFXManager.CollectKniveSoundFX();
+        }
+    }
+
     private void HealPlayer(int healingValue) {
         m_HealthManager.UpdateHearts(healingValue);
     }
 
-    private void Restart()
-    {
+    private void Restart() {
+        m_IsAlive = false;
         DisableScripts();
         m_PlayerFXManager.m_SFXAudioSource.enabled = false;
         m_PlayerFXManager.m_WalkingAudioSource.enabled = false;
-        StartCoroutine(GameManager.Instance.GameOverCoroutine());
+        StartCoroutine(GameManager.Instance.GameLoseCoroutine());
     }
 
     internal void DisableScripts() {
         m_PlayerController.enabled = false;
         m_PlayerMelee.enabled = false;
         m_PlayerThrow.enabled = false;
+        this.enabled = false;
     }
 
 

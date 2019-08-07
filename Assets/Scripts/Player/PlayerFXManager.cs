@@ -6,6 +6,9 @@ public class PlayerFXManager : FXManagerAbstract{
     public AudioSource m_WalkingAudioSource;
     public AudioSource m_SFXAudioSource;
     public AudioClip m_GettingHitSoundFX;
+    public AudioClip m_CollectingKniveSoundFX;
+    public AudioClip m_MeleeSoundFX;
+    public AudioClip m_OnThrowableHitSoundFX;
 
     private Rigidbody2D m_Rigidbody2D;
     private PlayerController m_PlayerController;
@@ -48,8 +51,20 @@ public class PlayerFXManager : FXManagerAbstract{
         m_SFXAudioSource.PlayOneShot(clip, 1f);
     }
 
-    public void HitSoundFX(){
+    public void GettingHitSoundFX(){
         PlaySound(m_GettingHitSoundFX);
+    }
+
+    internal void CollectKniveSoundFX() {
+        PlaySound(m_CollectingKniveSoundFX);
+    }
+
+    internal void MeleeSoundFX() {
+        PlaySound(m_MeleeSoundFX);
+    }
+
+    internal void OnThrowableHitSoundFX() {
+        PlaySound(m_OnThrowableHitSoundFX);
     }
 
     private bool CheckIfGrounded() {

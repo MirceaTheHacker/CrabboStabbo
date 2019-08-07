@@ -59,11 +59,4 @@ public class PlayerThrow : MonoBehaviour
         yNoise = Random.Range(m_KniveSpawnPoint.transform.position.y - 0.1f, m_KniveSpawnPoint.transform.position.y + 0.1f);
         return new Vector2(m_KniveSpawnPoint.transform.position.x, yNoise);
     }
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.tag == "LootableKnive") {
-            Destroy(other.gameObject);
-            m_PlayerManager.m_AvailableKnives++;
-        }
-    }
 }

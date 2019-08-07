@@ -10,20 +10,21 @@ public class GameManager : MonoBehaviour
 
     internal UIManager m_UIManager { get { return GetComponentInChildren<UIManager> (); } }
     internal GravityManager m_GravityManager {get {return GetComponentInChildren<GravityManager>(); } }
+    internal SoundManager m_SoundManager {get {return GetComponentInChildren<SoundManager>();}}
     internal Confiner m_Confiner;
 
     private void Awake() {
         if(Instance == null) {
             Instance = this;
-            // m_UIManager = GetComponent<UIManager>();
         } else if (Instance != this) {
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
     }
 
-    internal IEnumerator GameOverCoroutine () {
+    internal IEnumerator GameLoseCoroutine () {
         m_UIManager.ShowGameOverUI();
+        m_SoundManager.PlayGameLoseSound();
         m_Confiner.m_PolygonCollider2D.enabled = false;
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     internal void GameWin() {
         m_UIManager.ShowGameWinUI();
+        m_SoundManager.PlayGameWinSound();
     }
 
     public void PlayAgain() {
@@ -51,5 +53,5 @@ public class GameManager : MonoBehaviour
     public void QuitGame () {
         Debug.Log ("QUIT!");
         Application.Quit();
-        }
+    }
 }
