@@ -248,6 +248,7 @@ ScriptedImporter:
     textureFormat: -1
     textureCompression: 0
     compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
@@ -258,6 +259,9 @@ ScriptedImporter:
   importedTextureWidth: 128
   importedTextureHeight: 128
   documentSize: {x: 32, y: 32}
+  paperDollMode: 0
+  spriteCategoryList:
+    categories: []
   textureActualWidth: 32
   textureActualHeight: 32
   spritePackingTag: 
@@ -332,7 +336,9 @@ ScriptedImporter:
     bones: []
     parts: []
     dimension: {x: 0, y: 0}
+    characterGroups: []
   boneGOs: []
   generateGOHierarchy: 0
   textureAssetName: corner
   prefabAssetName: corner_GO
+  spriteLibAssetName: 
