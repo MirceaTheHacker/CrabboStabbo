@@ -53,6 +53,7 @@ public class PlayerThrow : MonoBehaviour
         knifeController.SetDirection(m_PlayerController.m_LookingDirection);
         knifeController.m_PlayerManager = m_PlayerManager;
         m_PlayerManager.m_AvailableKnives--;
+        knifeController.DisableCrabboCollison(m_PlayerManager.m_CapsuleCollider2D);
     }
 
     private Vector2 KnifeNoise(){

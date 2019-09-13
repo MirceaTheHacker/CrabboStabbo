@@ -14,6 +14,8 @@ public class KnifeController : MonoBehaviour
     private bool m_Collided = false;
     private KnifeFXManager m_FXManager;
     internal PlayerManager m_PlayerManager;
+    private CapsuleCollider2D m_CrabboCollider;
+    private PolygonCollider2D m_KniveCollider {get {return GetComponent<PolygonCollider2D>();}}
 
 
     void Awake()
@@ -39,6 +41,7 @@ public class KnifeController : MonoBehaviour
             StartCoroutine(FallToGround(destroyTimer));
             m_Rigidbody2D.velocity = new Vector2(0f,0f);
             m_Rigidbody2D.bodyType = RigidbodyType2D.Static;
+            EnableCrabboCollison();
         } else if(other.gameObject.tag == "Enemy")
         {
             NPCControllerAbstract npcController = other.gameObject.GetComponent<NPCControllerAbstract>();
@@ -72,5 +75,14 @@ public class KnifeController : MonoBehaviour
             gameObject.transform.eulerAngles = new Vector3 (0,-180,0);
         }
         this.direction = direction;
+    }
+
+    internal void DisableCrabboCollison(CapsuleCollider2D crabboCollider) {
+        m_CrabboCollider = crabboCollider;
+        Physics2D.IgnoreCollision(m_CrabboCollider, m_KniveCollider, true);
+    }
+
+    private void EnableCrabboCollison() {
+        Physics2D.IgnoreCollision(m_CrabboCollider, m_KniveCollider, false);
     }
 }
