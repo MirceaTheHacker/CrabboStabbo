@@ -7,7 +7,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
 {
     public float movementSpeed = 3f;
     public Transform m_ProximitySensor;
-    public int m_HealthPoints = 3;
+    public float m_HealthPoints;
     public int m_Strength = 1;
     public float m_PushingCoefficient = 4f;
     public GameObject[] m_PlayerDetectors;
@@ -136,7 +136,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         return false;
     }
 
-    protected virtual void Damage(int hitStrenght) {
+    protected virtual void Damage(float hitStrenght) {
         m_HealthPoints -= hitStrenght;
         if(m_HealthPoints > 0) {
             m_FXManager.PlayHitSoundFX();
@@ -170,7 +170,7 @@ public abstract class NPCControllerAbstract : MonoBehaviour
         m_Rigidbody2D.AddForce(pushVector,ForceMode2D.Impulse);
     }
 
-    internal void Attacked(int hitStrenght, PlayerManager playerManager) {
+    internal void Attacked(float hitStrenght, PlayerManager playerManager) {
         m_PlayerManager = playerManager;
         Damage(hitStrenght);
         Push(hitStrenght);

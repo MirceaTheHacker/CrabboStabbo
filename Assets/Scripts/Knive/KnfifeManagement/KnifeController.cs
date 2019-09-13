@@ -6,7 +6,7 @@ public class KnifeController : MonoBehaviour
 {   
     public float knifeVelocity = 5f;
     public float destroyTimer = 5f;
-    public int m_KnfieDamage = 1;
+    public float m_KnfieDamage;
     public ParticleSystem m_BloodTrail;
 
     private Rigidbody2D m_Rigidbody2D;
